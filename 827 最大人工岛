@@ -1,5 +1,6 @@
 #9.18每日一题
 #827. 最大人工岛
+#DFS
 class Solution {
 public:
     int dir[4][2]={0,1,1,0,-1,0,0,-1};
