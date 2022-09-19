@@ -1,0 +1,26 @@
+#18. 四数之和
+#回溯法
+class Solution {
+public:
+    vector<vector<int>> ans;
+    vector<int> path;
+    vector<vector<int>> fourSum(vector<int>& nums, int target) {
+        if(nums.size()<4)return ans;
+        sort(nums.begin(),nums.end());
+        traceBack(nums,0,0,0,target);
+        return ans;
+    }
+    void traceBack(const vector<int>& nums,int startIndex,int num,long sum,int target){
+        if(sum>target&&startIndex<nums.size()&&nums[startIndex]>0)return;//剪枝
+        if(num==4){
+            if(sum==target)ans.emplace_back(path);
+            return;
+        }
+        for(int i=startIndex;i<nums.size();i++){
+            if(i!=startIndex&&nums[i]==nums[i-1])continue;
+            path.emplace_back(nums[i]);
+            traceBack(nums,i+1,num+1,sum+nums[i],target);
+            path.pop_back();
+        }
+    }
+};
