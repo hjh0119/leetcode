@@ -1,0 +1,16 @@
+#11. 盛最多水的容器
+#双指针
+class Solution {
+public:
+    int maxArea(vector<int>& height) {
+        int n=height.size();
+        int curMax=0;
+        int left=0,right=n-1;
+        while(left<right){
+            curMax=max(curMax,(right-left)*min(height[left],height[right]));
+            if(height[left]<height[right])left++;
+            else right--;
+        }
+        return curMax;
+    }
+};
