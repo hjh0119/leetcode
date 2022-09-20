@@ -1,0 +1,32 @@
+#854. 相似度为 K 的字符串
+#9.21 每日一题
+#dfs
+class Solution {
+private:
+    int res=INT_MAX;
+    void dfs(string& s1,string& s2,int cur,int n,int ans){
+        if(cur==n){
+            res=min(ans,res);
+            return;
+        }
+        if(ans>=res)return;
+        if(s1[cur]!=s2[cur]){
+        for(int i=cur+1;i<n;i++){
+            if(s1[cur]==s2[i]){
+                swap(s2[i],s2[cur]);
+                dfs(s1,s2,cur+1,n,ans+1);
+                swap(s2[i],s2[cur]);
+            }
+        }
+        }
+        else{
+            dfs(s1,s2,cur+1,n,ans);
+        }
+
+    }
+public:
+    int kSimilarity(string s1, string s2) {
+        dfs(s1,s2,0,s1.size(),0);
+        return res;
+    }
+};
