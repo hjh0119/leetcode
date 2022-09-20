@@ -1,0 +1,31 @@
+#2305. 公平分发饼干
+#回溯法
+class Solution {
+private:
+    vector<int> child;
+    int average,sum;
+    int ans=INT_MAX;
+    void dfs(const vector<int>& cookies,int index,int curMax){
+        if(index==cookies.size()){
+            ans=min(curMax,ans);
+            return;
+        }
+        for(int i=0;i<child.size();++i){
+            if(child[i]>average)continue;
+            if(i>0&&child[i]==child[i-1])continue;
+            child[i]+=cookies[index];
+            dfs(cookies,index+1,max(curMax,child[i]));
+            child[i]-=cookies[index];
+        }
+     
+    }
+public:
+    int distributeCookies(vector<int>& cookies, int k) {
+        sort(cookies.begin(),cookies.end(),greater<int>());
+        child.resize(k,0);
+        sum=accumulate(cookies.begin(),cookies.end(),0);
+        average=sum/k;
+        dfs(cookies,0,0);
+        return ans;
+    }
+};
