@@ -1,0 +1,31 @@
+#9.20 每日
+#698. 划分为k个相等的子集
+#回溯法
+class Solution {
+private:
+    int target;
+    bool dfs(vector<int>& nums, vector<int>& result, int k, int index) {
+        if (index >= nums.size())return true;
+        for (int i = 0; i < k; ++i) {
+            if (nums[index] > result[i])continue;
+            if (i > 0 && result[i] == result[i - 1])continue;//桶容量一样跳过,剪枝
+            result[i] -= nums[index];
+            if (dfs(nums, result, k, index + 1))return true;//回溯的同时判断
+            result[i] += nums[index];
+        }
+        return false;
+    }
+public:
+    bool canPartitionKSubsets(vector<int>& nums, int k) {
+        int sum = 0;
+        for (int each : nums) {
+            sum += each;
+        }
+        if (sum % k != 0)return false;
+        target = sum / k;
+        sort(nums.begin(), nums.end(),greater<int>());
+        if (nums[0] > target)return false;
+        vector<int> result(k, target);
+        return dfs(nums, result, k, 0);
+    }
+};
