@@ -1,0 +1,32 @@
+#1723. 完成所有工作的最短时间
+#回溯法
+class Solution{
+private:
+    vector<int> worker;
+    int average, sum = 0;
+    int ans = INT_MAX;
+    void dfs(const vector<int>& jobs, int curJob, int curMax) {
+        if (curJob == jobs.size()) {
+            ans = min(curMax, ans);
+            return;
+        }
+        for (int i = 0; i < worker.size(); i++) {
+            if (worker[i] > average)continue;
+            if (i > 0 && worker[i] == worker[i - 1])continue;
+            worker[i] += jobs[curJob];
+            dfs(jobs, curJob + 1, max(curMax, worker[i]));
+            worker[i] -= jobs[curJob];
+        }
+
+    }
+public:
+    int minimumTimeRequired(vector<int>& jobs, int k) {
+        sum = accumulate(jobs.begin(), jobs.end(), 0);
+        worker.resize(k, 0);
+        average = sum / k;
+        if (sum % k > 0)average++;
+        sort(jobs.begin(), jobs.end(), greater<int>());
+        dfs(jobs, 0, 0);
+        return ans;
+    }
+};
