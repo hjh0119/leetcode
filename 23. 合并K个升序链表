@@ -1,0 +1,36 @@
+#23. 合并K个升序链表
+#优先队列
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    struct comp{
+        bool operator()(ListNode* a,ListNode* b){
+            return a->val > b->val;
+        }
+    };
+    priority_queue<ListNode*,vector<ListNode*>,comp> q;
+    ListNode* mergeKLists(vector<ListNode*>& lists) {
+        for(auto node:lists){
+            if(node)q.push(node);
+        }
+        ListNode* head=new ListNode();
+        ListNode* cur=head;
+        while(!q.empty()){
+            ListNode* temp=q.top();
+            cur->next=temp;
+            q.pop();
+            cur=cur->next;
+            if(temp->next)q.push(temp->next);
+        }
+        return head->next;
+    }
+};
