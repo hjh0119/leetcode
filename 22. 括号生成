@@ -1,0 +1,28 @@
+#22. 括号生成
+#回溯法
+class Solution {
+private:
+    vector<string> ans;
+    string path;
+    void backtrack(int n,int left,int right){
+        if(path.size()==n*2){
+            ans.emplace_back(path);
+            return;
+        }
+        if(left<n){
+            path.push_back('(');
+            backtrack(n,left+1,right);
+            path.pop_back();
+        }
+        if(right<left){
+            path.push_back(')');
+            backtrack(n,left,right+1);
+            path.pop_back();
+        }
+    }
+public:
+    vector<string> generateParenthesis(int n) {
+        backtrack(n,0,0);
+        return ans;
+    }
+};
