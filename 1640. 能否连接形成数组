@@ -1,0 +1,21 @@
+#1640. 能否连接形成数组
+#9.22每日一题
+class Solution {
+public:
+    bool canFormArray(vector<int>& arr, vector<vector<int>>& pieces) {
+        unordered_map<int,int> m;
+        for(int i=0;i<pieces.size();i++){
+            m[pieces[i][0]]=i;
+        }
+        for(int i=0;i<arr.size();i++){
+            auto it=m.find(arr[i]);
+            if(it==m.end())return false;
+            int index=it->second;
+            for(int j=1;j<pieces[index].size();j++){
+                if(arr[++i]!=pieces[index][j])return false;
+            }
+        }
+        return true;
+        }
+    
+};
