@@ -1,0 +1,20 @@
+#26. 删除有序数组中的重复项
+class Solution {
+public:
+    int removeDuplicates(vector<int>& nums) {
+        int n = nums.size();
+        if(n<2)return n;
+        int i=0,j=1;
+        while(j<nums.size()){//i从头依次放入不同值
+            if(nums[i]==nums[j]){
+                j++;//一直找到不同的数
+            }
+            else{
+                i++;
+                nums[i]=nums[j];
+                j++;
+            }
+        }
+        return i+1;
+    }
+};
