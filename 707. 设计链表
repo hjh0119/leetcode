@@ -1,0 +1,84 @@
+#707. 设计链表
+#9.23每日一题
+class MyLinkedList {
+private:
+    struct LinkedNode{
+        int val;
+        LinkedNode* next;
+        LinkedNode(int val):val(val),next(nullptr){}
+    };
+    int size;
+    LinkedNode* head;
+public:
+
+    MyLinkedList() {
+        head=new LinkedNode(0);
+        size=0;
+    }
+    
+    int get(int index) {
+        if(index<0||index>=size)return -1;
+        LinkedNode* temp=head->next;
+        while(index--){
+            temp=temp->next;
+        }
+        return temp->val;
+    }
+    
+    void addAtHead(int val) {
+        LinkedNode* temp=new LinkedNode(val);
+        temp->next=head->next;
+        head->next=temp;
+        size++;
+    }
+    
+    void addAtTail(int val) {
+        LinkedNode* temp=head;
+        while(temp->next){
+            temp=temp->next;
+        }
+        temp->next=new LinkedNode(val);
+        size++;
+    }
+    
+    void addAtIndex(int index, int val) {
+        if(index<0){
+            addAtHead(val);
+            return;
+        }
+        if(index>size)return;
+        if(index==size){
+            addAtTail(val);
+            return;
+        }
+        LinkedNode* temp=head;
+        while(index--){
+            temp=temp->next;
+        }
+        LinkedNode* target=new LinkedNode(val);
+        target->next=temp->next;
+        temp->next=target;
+        size++;
+    }
+    void deleteAtIndex(int index) {
+        if(index<0||index>=size){
+            return;
+        }
+        LinkedNode* temp=head;
+        while(index--){
+            temp=temp->next;
+        }
+        temp->next=temp->next->next;
+        size--;
+    }
+};
+
+/**
+ * Your MyLinkedList object will be instantiated and called as such:
+ * MyLinkedList* obj = new MyLinkedList();
+ * int param_1 = obj->get(index);
+ * obj->addAtHead(val);
+ * obj->addAtTail(val);
+ * obj->addAtIndex(index,val);
+ * obj->deleteAtIndex(index);
+ */
