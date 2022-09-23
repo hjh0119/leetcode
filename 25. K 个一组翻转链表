@@ -1,0 +1,38 @@
+#25. K 个一组翻转链表
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* reverseKGroup(ListNode* head, int k) {
+        if(k==1)return head;
+        ListNode* dummy = new ListNode(0,head);
+        ListNode* pre=dummy,*tail=dummy;
+        while(true){
+            int count=0;
+            while(tail!=nullptr&&count!=k){
+                tail=tail->next;
+                count++;
+            }//tail是k个节点的尾节点
+            if(tail==nullptr)break;
+            ListNode* head1=pre->next;
+            while(pre->next!=tail){
+                ListNode* cur=pre->next;
+                pre->next=cur->next;
+                cur->next=tail->next;
+                tail->next=cur;
+            }
+            pre=head1;
+            tail=head1;
+        }
+        return dummy->next;
+        
+    }
+};
