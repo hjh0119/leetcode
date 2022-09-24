@@ -1,0 +1,31 @@
+#1652. 拆炸弹
+#9.24每日一题
+class Solution {
+public:
+    vector<int> decrypt(vector<int>& code, int k) {
+        int n=code.size();
+        if(k==0){
+            vector<int> ans(n,0);
+            return ans;
+        }
+        vector<int> ans(n);
+        if(k>0){
+            for(int i=0;i<n;i++){
+                int temp=0;
+                for(int j=0;j<k;j++){
+                    temp+=code[(i+j+1)%n];
+                }
+                ans[i]=temp;
+            }
+            return ans;
+        }
+        for(int i=0;i<n;i++){
+            int temp=0;
+            for(int j=0;j<-1*k;j++){
+                temp+=code[(i-j-1+n)%n];
+            }
+            ans[i]=temp;
+        }
+        return ans;
+    }
+};
