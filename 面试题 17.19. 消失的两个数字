@@ -1,0 +1,20 @@
+#面试题 17.19. 消失的两个数字
+#9.26每日一题
+//整体思路:算出a+b与a*b求解方程
+class Solution {
+public:
+    vector<int> missingTwo(vector<int>& nums) {
+        long n=nums.size()+2;
+        long target=n*(n+1)/2;//1到n累加
+        long sum=accumulate(nums.begin(),nums.end(),0);
+        long aPlusB=target-sum;//a*b
+        long squareSum=n*(n+1)*(2*n+1)/6;//平方和公式
+        long temp=0;
+        for(int each:nums)temp+=each*each;//数组平方和
+        long squareSumAB=squareSum-temp;//a2+b2
+        long aTimesB=(aPlusB*aPlusB-squareSumAB)/2;//a*b
+        int a=(aPlusB+sqrt(aPlusB*aPlusB-4*aTimesB))/2;//一元二次函数求解公式(取正解)
+        int b=aPlusB-a;
+        return{a,b};
+    }
+};
