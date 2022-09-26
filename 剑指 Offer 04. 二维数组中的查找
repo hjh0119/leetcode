@@ -1,7 +1,7 @@
 class Solution {
 public:
     bool findNumberIn2DArray(vector<vector<int>>& matrix, int target) {
-        
+        if(matrix.empty())return false;
         int n = matrix.size();
         int m = matrix[0].size();
         if(!n||!m)return false;
