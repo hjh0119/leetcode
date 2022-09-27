@@ -1,0 +1,10 @@
+#面试题 01.02. 判定是否互为字符重排
+//如果要达到On复杂度,设置大小为128的char数组对两个string进行计数再比较
+class Solution {
+public:
+    bool CheckPermutation(string s1, string s2) {
+        sort(s1.begin(),s1.end());
+        sort(s2.begin(),s2.end());
+        return s1==s2;
+    }
+};
