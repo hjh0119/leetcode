@@ -1,0 +1,18 @@
+class Solution {
+public:
+    string replaceSpace(string s) {
+        int spaceCnt=0;
+        for(char each:s)if(each==' ')spaceCnt++;
+        int j=s.size()-1;
+        s.resize(s.size()+spaceCnt*2);
+        for(int i=s.size()-1;j<i;i--,j--){
+            if(s[j]==' '){
+                s[i--]='0';
+                s[i--]='2';
+                s[i]='%';
+            }
+            else s[i]=s[j];
+        }
+        return s;
+    }
+};
