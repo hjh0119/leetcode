@@ -1,0 +1,15 @@
+class Solution {
+public:
+    int fib(int n) {
+        int first=0,second=1;
+        if(n<2)return n;
+        int ans;
+        while(n>=2){
+            ans=(first+second)%1000000007;
+            first=second;
+            second=ans;
+            n--;
+        }
+        return ans%1000000007;
+    }
+};
