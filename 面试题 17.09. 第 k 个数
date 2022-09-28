@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int min(int a,int b,int c){
+        if(a<=b&&a<=c)return a;
+        else if(b<=a&&b<=c)return b;
+        return c;
+    }
+    int getKthMagicNumber(int n) {
+        if(!n)return 0;
+        vector<int> nums(n,0);
+        nums[0]=1;
+        int i=0,j=0,k=0;
+        for(int idx=1;idx<n;idx++){
+            int temp=min(nums[i]*3,nums[j]*5,nums[k]*7);
+            if(temp==nums[i]*3)i++;
+            if(temp==nums[j]*5)j++;
+            if(temp==nums[k]*7)k++;
+            nums[idx]=temp;
+        }
+        return nums[n-1];
+    }
+};
