@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int min(int a,int b,int c){
+        if(a<=b&&a<=c)return a;
+        else if(b<=a&&b<=c)return b;
+        return c;
+    }
+    int nthUglyNumber(int n) {
+        if(!n)return 0;
+        vector<int> ugly(n,0);
+        ugly[0]=1;
+        int i=0,j=0,k=0;
+        for(int idx=1;idx<n;idx++){
+            int temp=min(ugly[i]*2,ugly[j]*3,ugly[k]*5);
+            if(temp==ugly[i]*2)++i;
+            if(temp==ugly[j]*3)++j;
+            if(temp==ugly[k]*5)++k;
+            ugly[idx]=temp;
+        }
+        return ugly[n-1];
+    }
+};
+剑指 Offer 49. 丑数
