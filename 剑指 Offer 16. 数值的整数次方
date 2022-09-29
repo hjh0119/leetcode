@@ -1,0 +1,24 @@
+//思想:快速幂。需要注意n<0时的下限-2147483648转正后会溢出int，可以先算一次幂最后再除。
+class Solution {
+public:
+    double myPow(double x, int n) {
+        if(x==1.0||x==0)return x;  
+        if(n==0)return 1.0;  
+        bool flag=false; 
+        double temp=x; 
+        if(n<0)
+        {
+            x=1/x;
+            n=-1-n;
+            flag=true;
+        }
+
+        double result=1;
+        while(n>0){
+            if(n%2==1)result*=x;
+            n/=2;
+            x*=x;
+        }
+        return flag?result/temp:result;
+    }
+};
