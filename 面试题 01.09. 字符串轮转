@@ -1,0 +1,8 @@
+class Solution {
+public:
+    bool isFlipedString(string s1, string s2) {
+        if(s1.length()!=s2.length())return false;
+        string s3=s2+s2;
+        return s3.find(s1)!=string::npos;
+    }
+};
