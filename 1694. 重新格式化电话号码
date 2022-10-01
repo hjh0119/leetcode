@@ -1,0 +1,44 @@
+class Solution {
+public:
+    string reformatNumber(string number) {
+        int Delete=0;
+        for(int i=0;i<number.length();i++){
+            if(number[i]=='-')Delete++;
+            else if(number[i]==' ')Delete++;
+        }
+        int num=number.size()-Delete;
+        int end=num%3;
+        if(end<=1)end+=3;
+        string ans;
+        int i=0,j=0;
+        for(;i<num;i++){
+            if(i>0&&i%3==0){
+                ans.push_back('-');
+            }
+            if(num-i<=end){
+                break;
+            }
+            while(number[j]==' '||number[j]=='-')j++;
+            ans.push_back(number[j]);
+            j++;
+        }
+        if(end<4){
+            while(i<num){
+                while(number[j]==' '||number[j]=='-')j++;
+                ans.push_back(number[j]);
+                i++;
+                j++;
+            }
+        }
+        else{
+            while(i<num){
+                while(number[j]==' '||number[j]=='-')j++;
+                if(num-i==2)ans.push_back('-');
+                ans.push_back(number[j]);
+                i++;
+                j++;
+            }
+        }
+        return ans;
+    }
+};
