@@ -1,0 +1,18 @@
+//R只能右移至X后,R左边的X固定,L只能左移到X前,L右边的X固定
+class Solution {
+public:
+    bool canTransform(string start, string end) {
+        int n=start.size(),i=0,j=0;
+        while(true){
+            while(i<n&&start[i]=='X')++i;
+            while(j<n&&end[j]=='X')++j;
+            if(i==n&&j==n)return true;
+            if(i==n||j==n)return false;
+            if(start[i]!=end[j])return false;
+            if(start[i]=='L'&&i<j)return false;
+            if(start[i]=='R'&&i>j)return false;
+            i++,j++;
+        }
+        return true;
+    }
+};
