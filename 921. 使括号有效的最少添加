@@ -1,0 +1,15 @@
+class Solution {
+public:
+    int minAddToMakeValid(string s) {
+            int cnt=0;
+            int left=0;
+        for(int i=0;i<s.length();++i){
+            if(s[i]==')'){
+                if(left==0)cnt++;
+                else left--;
+            }
+            else if(s[i]=='(')left++;
+        }
+        return cnt+left;
+    }
+};
