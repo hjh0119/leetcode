@@ -1,0 +1,23 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* getKthFromEnd(ListNode* head, int k) {
+        ListNode*pre=head,*post=head;
+        while(k&&post){
+            k--;
+            post=post->next;
+        }
+        while(post){
+            pre=pre->next;
+            post=post->next;
+        }
+        return pre;
+    }
+};
