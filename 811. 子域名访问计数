@@ -1,0 +1,22 @@
+class Solution {
+public:
+    vector<string> subdomainVisits(vector<string>& cpdomains) {
+        map<string,int> cnts;
+        for(auto each:cpdomains){
+            int space=each.find(' ');
+            int cnt=stoi(each.substr(0,space));
+            string domain=each.substr(space+1);
+            cnts[domain]+=cnt;
+            while(domain.find('.')!=string::npos){
+                int dot=domain.find('.');
+                domain=domain.substr(dot+1);
+                cnts[domain]+=cnt;
+            }
+        }
+        vector<string> ans;
+        for(auto &&[domain,cnt]:cnts){
+            ans.emplace_back(to_string(cnt)+' '+domain);
+        }
+        return ans;
+    }
+};
