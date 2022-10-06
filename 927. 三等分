@@ -1,0 +1,26 @@
+class Solution {
+public:
+    vector<int> threeEqualParts(vector<int>& arr) {
+        int cnt1=0;
+        for(int each:arr)if(each==1)cnt1++;
+        if(cnt1%3!=0)return{-1,-1};
+        if((cnt1/=3)==0)return{0,2};
+        int cur1=0,first,second,third;
+        for(int i=0;i<arr.size();i++){
+            if(arr[i]==1){
+                if(cur1==0)first=i;
+                else if(cur1==cnt1)second=i;
+                else if(cur1==cnt1*2)third=i;
+                cur1++;
+            }
+        }
+        int len=arr.size()-third;
+        if(first+len<=second&&second+len<=third){
+            for(int i=1;i<len;i++){
+                if(arr[first+i]!=arr[third+i]||arr[second+i]!=arr[third+i])return {-1,-1};
+            }
+            return {first+len-1,second+len};
+        }
+        return {-1,-1};
+    }
+};
