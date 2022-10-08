@@ -1,0 +1,17 @@
+class Solution {
+public:
+    vector<int> advantageCount(vector<int>& nums1, vector<int>& nums2) {
+        int n = nums1.size();
+        sort(nums1.begin(),nums1.end());
+        vector<int> idx(n);
+        vector<int> ans(n);
+        iota(idx.begin(),idx.end(),0);
+        sort(idx.begin(),idx.end(),[&](int i,int j){return nums2[i]<nums2[j];});
+        int left=0,right=n-1;
+        for(int x:nums1){
+            if(x>nums2[idx[left]])ans[idx[left++]]=x;
+            else ans[idx[right--]]=x;
+        }
+        return ans;
+    }
+};
