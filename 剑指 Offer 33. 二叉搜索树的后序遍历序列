@@ -1,0 +1,14 @@
+class Solution {
+public:
+    bool verifyPostorder(vector<int>& postorder) {
+        if(postorder.size()<2)return true;
+        return recur(0,postorder.size()-1,postorder);
+    }
+    bool recur(int i,int j,vector<int>& p){
+        if(i>=j)return true;
+        int k=i;
+        while(p[k]<p[j])++k;
+        for(int m=k;m<j;m++)if(p[m]<p[j])return false;
+        return recur(i,k-1,p)&&recur(k,j-1,p);
+    }
+};
