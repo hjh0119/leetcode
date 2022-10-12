@@ -1,0 +1,27 @@
+class Solution {
+private:
+    vector<string> result;
+    string path;
+    void backtrack(string& s,vector<bool>& used){
+        if(path.size()==s.size()){
+            result.emplace_back(path);
+            return;
+        }
+        for(int i=0;i<s.size();i++){
+            if(i>0&&s[i]==s[i-1]&&used[i-1]==false)continue;
+            if(used[i])continue;
+            used[i]=true;
+            path.push_back(s[i]);
+            backtrack(s,used);
+            path.pop_back();
+            used[i]=false;
+        }
+    }
+public:
+    vector<string> permutation(string s) {
+        sort(s.begin(),s.end());
+        vector<bool> used(s.size(),false);
+        backtrack(s,used);
+        return result;
+    }
+};
