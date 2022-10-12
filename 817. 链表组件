@@ -11,7 +11,7 @@
 class Solution {
 public:
     int numComponents(ListNode* head, vector<int>& nums) {
-        set<int> s;
+        unordered_set<int> s;
         for(int each:nums)s.insert(each);
         int cur=0;
         while(head!=nullptr){
