@@ -1,0 +1,16 @@
+//并查集
+class Solution {
+public:
+    int fa[4010];
+    int find(int x) {return x == fa[x] ? x : fa[x] = find(fa[x]);}
+    bool possibleBipartition(int n, vector<vector<int>>& dislikes) {
+        for(int i=0;i<=2*n;i++)fa[i]=i;
+        for(auto &i:dislikes){
+            int a=find(i[0]),b=find(i[1]);
+            if(a==b)return false;
+            fa[find(a+n)]=b;
+            fa[find(b+n)]=a;
+        }
+        return true;
+    }
+};
