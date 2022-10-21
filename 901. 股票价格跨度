@@ -1,0 +1,43 @@
+//cpp
+class StockSpanner {
+private:
+    stack<pair<int,int>> s;
+public:
+    StockSpanner() {
+        s.emplace(-1,INT_MAX);
+    }
+    
+    int next(int price) {
+        if(s.top().second>price){
+            s.emplace(1,price);
+            return 1;
+        }
+        else{
+            int cnt=1;
+            while(price>=s.top().second){
+                cnt+=s.top().first;
+                s.pop();
+            }
+            s.emplace(cnt,price);
+            return cnt;
+        }
+    }
+};
+
+#python
+class StockSpanner:
+
+    def __init__(self):
+        self.stack=[(-1,1e6)]
+
+    def next(self, price: int) -> int:
+        if(price<self.stack[-1][1]):
+            self.stack.append((1,price))
+            return 1
+        else:
+            cnt=1
+            while price>=self.stack[-1][1]:
+                cnt+=self.stack.pop()[0]
+            self.stack.append((cnt,price))
+            return cnt
+
