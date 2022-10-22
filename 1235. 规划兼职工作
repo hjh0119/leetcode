@@ -1,0 +1,21 @@
+//cpp
+class Solution {
+public:
+    int jobScheduling(vector<int>& startTime, vector<int>& endTime, vector<int>& profit) {
+        int n=startTime.size();
+        vector<vector<int>> work(n);
+        for(int i =0;i<n;i++){
+            work[i]={startTime[i],endTime[i],profit[i]};
+        }
+        sort(work.begin(),work.end(),[&](const vector<int> a,const vector<int> b){return a[1]<b[1];});
+        vector<int> dp(n+1);
+        dp[0]=0;
+        for(int i=1;i<=n;i++){
+            int k=upper_bound(work.begin(),work.begin()+i-1,work[i-1][0],[&](int st,const vector<int>& job){
+                return st<job[1];
+            })-work.begin();
+            dp[i]=max(dp[i-1],dp[k]+work[i-1][2]);
+        }
+        return dp[n];
+    }
+};
