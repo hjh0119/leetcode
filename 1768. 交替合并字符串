@@ -1,0 +1,21 @@
+//cpp
+class Solution {
+public:
+    string mergeAlternately(string word1, string word2) {
+        int l1=word1.size(),l2=word2.size();
+        int n=min(l1,l2);
+        string ans="";
+        for(int i=0;i<n;i++){
+            if(i<l1)ans.push_back(word1[i]);
+            if(i<l2)ans.push_back(word2[i]);
+        }
+        if(l1>n){
+            for(auto each:word1.substr(n))ans.push_back(each);
+        }
+        else if(l2>n){
+            for(auto each:word2.substr(n))ans.push_back(each);
+        }
+        return ans;
+    }
+};
+
