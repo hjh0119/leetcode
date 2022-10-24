@@ -1,0 +1,15 @@
+class Solution:
+    def partitionDisjoint(self, nums: List[int]) -> int:
+        n=len(nums)
+        if n==2:
+            return 1
+        a=list(range(n))
+        a[n-2]=nums[n-1]
+        for i in range(n-3,-1,-1):
+            a[i]=min(nums[i+1],a[i+1])
+        curMax=-1
+        for i in range(n-1):
+            curMax=max(curMax,nums[i])
+            if curMax<=a[i]:
+                return i+1
+
