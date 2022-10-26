@@ -1,0 +1,24 @@
+class Solution { 
+public: 
+int shortestSubarray(vector<int>& nums, int k) {
+    int n=nums.size(),res=n+1; 
+    vector<long> A(n+1);
+    A[0]=0;
+    deque<int> d; 
+    for(int i=0;i<n;i++){ 
+        A[i+1]=A[i]+nums[i];
+    }
+    for(int i=0;i<n+1;i++){
+        while(!d.empty()&&A[i]-A[d.front()]>=k){ 
+            res=min(res,i-d.front()); 
+            d.pop_front(); 
+        } 
+        while(!d.empty()&&A[i]<=A[d.back()]){
+        d.pop_back(); 
+        }
+        d.push_back(i); 
+        
+    }
+        return res==n+1?-1:res; 
+    } 
+};
