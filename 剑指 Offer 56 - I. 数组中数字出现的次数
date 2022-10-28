@@ -1,0 +1,17 @@
+class Solution {
+public:
+    vector<int> singleNumbers(vector<int>& nums) {
+        int z=0;
+        for(int each:nums)z^=each;
+        int m=1;
+        while((m&z)==0){
+            m<<=1;
+        }
+        int x=0,y=0;
+        for(int each:nums){
+            if((each&m)==0)x^=each;
+            else y^=each;
+        }
+        return {x,y};
+    }
+};
