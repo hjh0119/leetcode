@@ -1,0 +1,20 @@
+class Solution {
+public:
+    int sumSubarrayMins(vector<int>& arr) {
+        int mod=1e9+7;
+        int n=arr.size();
+        vector<int> dp(n);
+        stack<int> s;
+        int ans=0;
+        for(int i=0;i<n;i++){
+            while(!s.empty()&&arr[s.top()]>arr[i])
+                s.pop();
+            int j=s.empty()?(i+1):(i-s.top());
+            dp[i]=j*arr[i]+(s.empty()?0:dp[i-j]);
+            ans=(ans+dp[i])%mod;
+            s.emplace(i);
+        }
+        return ans;
+    }
+};
+
