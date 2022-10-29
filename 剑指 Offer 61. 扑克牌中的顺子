@@ -1,0 +1,18 @@
+class Solution {
+public:
+    bool isStraight(vector<int>& nums) {
+        int cnt0=0;
+        int minn=14,maxx=-1;
+        set<int> s;
+        for(int i=0;i<5;i++){
+            if(nums[i]==0)cnt0++;
+            else{
+                if(s.count(nums[i]))return false;
+                s.insert(nums[i]);
+                minn=min(minn,nums[i]);
+                maxx=max(maxx,nums[i]);
+            }
+        }
+        return (maxx-minn<=4)||cnt0==5;
+    }
+};
