@@ -1,0 +1,17 @@
+class Solution {
+public:
+    vector<vector<int>> findContinuousSequence(int target) {
+        vector<vector<int>> res;
+        int i=1;
+        while(target>0){
+            target-=i++;
+            if(target>0&&target%i==0){
+                vector<int> tmp;
+                for(int j=0;j<i;j++)tmp.emplace_back(target/i+j);
+                res.emplace_back(tmp);
+            }
+        }
+        reverse(res.begin(),res.end());
+        return res;
+    }
+};
