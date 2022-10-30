@@ -1,0 +1,22 @@
+class Solution {
+public:
+    vector<string> res;
+    void backTracking(string s,int pos){
+        while (pos < s.size() && isdigit(s[pos])) {
+            pos++;
+        }
+        if(pos==s.size()){
+            res.emplace_back(s);
+            return;
+        }
+        s[pos] ^= 32;
+        backTracking(s, pos + 1);
+        s[pos] ^= 32;
+        backTracking(s, pos + 1);
+    }
+    vector<string> letterCasePermutation(string s) {
+        backTracking(s,0);
+        return res;
+    }
+};
+//大小写字母转换 ^= 异或
