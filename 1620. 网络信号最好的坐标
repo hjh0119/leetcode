@@ -1,0 +1,32 @@
+class Solution {
+public:
+    int distance(int x1,int y1,int x2,int y2){
+        return (x1-x2)*(x1-x2)+(y1-y2)*(y1-y2);
+    }
+    vector<int> bestCoordinate(vector<vector<int>>& towers, int radius) {
+        int maxx=0,maxy=0;
+        for(int i=0;i<towers.size();i++){
+            maxx=max(maxx,towers[i][0]);
+            maxy=max(maxy,towers[i][1]);
+        }
+        int r=radius*radius;
+        int maxSign=-1.0;
+        int x_idx,y_idx;
+        for(int i=0;i<=maxx;i++){ 
+            for(int j=0;j<=maxy;j++){
+                int cur=0;
+                for(int k=0;k<towers.size();k++){
+                    double dis=sqrt(distance(i,j,towers[k][0],towers[k][1]));
+                    if(dis<=radius)cur+=floor((double)(towers[k][2]/(1+dis)));
+                }
+                if(cur>maxSign){
+                    x_idx=i;
+                    y_idx=j;
+                    maxSign=cur;
+                }
+            }
+        }
+        
+        return {x_idx,y_idx};
+    }
+};
