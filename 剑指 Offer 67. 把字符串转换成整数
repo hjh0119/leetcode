@@ -1,0 +1,43 @@
+class Solution {
+public:
+    int strToInt(string str) {
+        long long ans=0LL;
+        bool space=true,num=false,signal=true;
+        for(int i=0;i<str.size();++i){
+            if(!num){//还没开始数字
+                if(space&&str[i]==' ')continue;
+                space=false;
+                if(str[i]=='-'){
+                    signal=false;
+                    num=true;
+                }
+                else if(str[i]=='+'){
+                    num=true;
+                }
+                else if(str[i]>='0'&&str[i]<='9'){
+                    num=true;
+                    ans=(str[i]-'0');
+                }
+                else return 0;
+            }
+            else{
+                if(str[i]>='0'&&str[i]<='9'){
+                    ans=ans*10+(str[i]-'0');
+                    if(ans>INT_MAX){
+                        return signal?INT_MAX:INT_MIN;
+                    }
+                }
+                else{
+                    if(!signal)ans=-ans;
+                    if(ans>INT_MAX)return INT_MAX;
+                    else if(ans<INT_MIN)return INT_MIN;
+                    return ans;
+                }
+            }
+        }
+        if(!signal)ans=-ans;
+        if(ans>INT_MAX)return INT_MAX;
+        else if(ans<INT_MIN)return INT_MIN;
+        else return ans;
+    }
+};
