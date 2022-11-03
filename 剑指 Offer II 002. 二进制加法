@@ -1,0 +1,19 @@
+class Solution {
+public:
+    string addBinary(string a, string b) {
+        int carry=0,n=a.size(),m=b.size();
+        string res;
+        int x,y;
+        for(int i=a.size()-1,j=b.size()-1;i>=0||j>=0;i--,j--){
+            if(i>=0)x=a[i]-'0';
+            else x=0;
+            if(j>=0)y=b[j]-'0';
+            else y=0;
+            res+=('0'+(x+y+carry)%2);
+            carry=(x+y+carry)/2;
+        }
+        if(carry==1)res+='1';
+        reverse(res.begin(),res.end());
+        return res;
+    }
+};
