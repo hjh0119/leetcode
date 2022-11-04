@@ -1,0 +1,22 @@
+//数学推导题
+//target=sigma n时,return n
+//sigma n-target为偶数时,可以让前面一步翻转,return n
+//差值为奇数时,当n为偶,可以先走下一步(必为奇数),再翻转,return n+1
+//n为奇数,先计算target-1时return n,再多走两步弥补1,return n+2
+class Solution {
+public:
+    int reachNumber(int target) {
+        target=abs(target);
+        int i=0;
+        int num=0;
+        while(num<target){
+            i++;
+            num+=i;
+        }
+        if((num-target)%2==0)return i;
+        else {
+            if(i%2==0)return i+1;
+            return i+2;
+    }
+}
+};
