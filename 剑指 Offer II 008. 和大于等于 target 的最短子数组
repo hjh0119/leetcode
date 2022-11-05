@@ -1,0 +1,19 @@
+class Solution {
+public:
+    int minSubArrayLen(int target, vector<int>& nums) {
+        int n=nums.size();
+        vector<int> leftSum(n+1);
+        leftSum[0]=0;
+        for(int i=1;i<=n;i++){
+            leftSum[i]=leftSum[i-1]+nums[i-1];
+        }
+        if(leftSum[n]<target)return 0;
+        int minLen=n;
+        for(int i=1;i<=n;i++){
+            int t=target+leftSum[i-1];
+            auto bound=lower_bound(leftSum.begin(),leftSum.end(),t);
+            if(bound!=leftSum.end())minLen=min(minLen,int((bound-leftSum.begin()-(i-1))));
+        }
+        return minLen;
+    }
+};
