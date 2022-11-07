@@ -1,0 +1,19 @@
+class Solution:
+    def findSplit(self,s:str)->List[str]:#返回s合法坐标的list
+        lis=[]
+        if len(s)==1 or s[0]!='0':#无前导0
+            lis.append(s)
+        for i in range(1,len(s)):#加小数点
+            s1,s2=s[:i],s[i:]
+            if (i==1 or s[0]!='0') and s2[-1]!='0':
+                lis.append(s1+'.'+s2)
+        return lis
+    def ambiguousCoordinates(self, s: str) -> List[str]:
+        n,ans=len(s),[]
+        s=s[1:n-1]
+        for i in range(1,n-2):
+            part1,part2=self.findSplit(s[:i]),self.findSplit(s[i:])
+            for a in part1:
+                for b in part2:
+                    ans.append('('+a+', '+b+')')
+        return ans
