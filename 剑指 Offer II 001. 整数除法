@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int divide(int a, int b) {
+        if(a==INT_MIN&&b==-1)return INT_MAX;
+        if(a==INT_MIN&&b==1)return INT_MIN;
+        if(b==0)return 0;
+        bool flag=(a>0&&b<0)||(a<0&&b>0)?false:true;//异号
+        if(a>0)a=-a;//全部转为负数防止溢出
+        if(b>0)b=-b;
+        int ans=0;
+        while(a<=b){
+            int d=b,c=1;
+            while(d>=INT_MIN-d&&d>=a-d){//加法变减法防止溢出
+                d+=d;
+                c+=c;
+            }
+            a-=d;
+            ans+=c;
+        }
+        return flag?ans:-ans;
+
+    }
+};
