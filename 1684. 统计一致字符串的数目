@@ -1,0 +1,17 @@
+class Solution {
+public:
+    int countConsistentStrings(string allowed, vector<string>& words) {
+        int allow_mask=0,cnt=0;
+        for(int i=0;i<allowed.size();i++){
+            allow_mask|=1<<(allowed[i]-'a');
+        }
+        for(string str:words){
+            int tmp=0;
+            for(int i=0;i<str.size();i++){
+                tmp|=1<<(str[i]-'a');
+            }
+            if((tmp|allow_mask)==allow_mask)cnt++;
+        }
+        return cnt;
+    }
+};
