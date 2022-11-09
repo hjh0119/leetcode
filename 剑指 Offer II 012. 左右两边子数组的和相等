@@ -1,0 +1,29 @@
+//空间ON
+class Solution {
+public:
+    int pivotIndex(vector<int>& nums) {
+        int n=nums.size();
+        vector<int> leftSum(n+1,0);//不包括自己的左边和
+        for(int i=1;i<=n;i++){
+            leftSum[i]=leftSum[i-1]+nums[i-1];
+        }
+        for(int i=0;i<n;i++){
+            if(leftSum[i]==leftSum[n]-leftSum[i+1])return i;
+        }
+        return -1;
+    }
+};
+//空间O1
+class Solution {
+public:
+    int pivotIndex(vector<int>& nums) {
+        int sum=0,cur=0;
+        for(auto each:nums)sum+=each;
+        for(int i=0;i<nums.size();i++){
+            sum-=nums[i];
+            if(sum==cur)return i;
+            cur+=nums[i];
+        }
+        return -1;
+    }
+};
