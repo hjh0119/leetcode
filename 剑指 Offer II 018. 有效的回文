@@ -1,0 +1,33 @@
+class Solution {
+public:
+    bool isDigit(char a){
+        if(a>='0'&&a<='9')return true;
+        return false;
+    }
+    bool isletter(char a){
+        if(a>='a'&&a<='z')return true;
+        if(a>='A'&&a<='Z')return true;
+        return false;
+    }
+    bool isPalindrome(string s) {
+        if(s=="")return true;
+        int l=0,r=s.size()-1;
+        while(l<r){
+            while(l<r&&!isDigit(s[l])&&!isletter(s[l]))l++;
+            while(l<r&&!isDigit(s[r])&&!isletter(s[r]))r--;
+            if(l>=r)return true;
+            if(s[l]==s[r]){
+                l++;
+                r--;
+                continue;
+            }
+            else if((s[l]^s[r])==32){
+                l++;
+                r--;
+                continue;
+            }
+            return false;
+        }
+        return true;
+    }
+};
