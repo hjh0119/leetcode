@@ -1,0 +1,15 @@
+//滑动窗口
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        int maxlen=0,l=0,r=0;
+        vector<int> hash(128);
+        while(r<s.size()){
+            hash[s[r]]++;
+            while(hash[s[r]]>1)hash[s[l++]]--;
+            r++;
+            maxlen=max(maxlen,r-l);
+        }
+        return maxlen;
+    }
+};
