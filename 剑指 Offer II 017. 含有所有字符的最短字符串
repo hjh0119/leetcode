@@ -1,0 +1,35 @@
+class Solution {
+public:
+    string minWindow(string s, string t) {
+        if(s.size()<t.size())return "";
+        if(s.size()==1&&t.size()==1)return s[0]==t[0]?s:"";
+        int needCnt=t.size();
+        vector<int> hash(128,0);
+        for(char c:t)hash[c]++;//记录需要的字符数
+        for(int i=0;i<hash.size();i++){
+            if(hash[i]==0)hash[i]=INT_MIN;//不需要的字符记标记
+        }
+        int r=0,res=INT_MAX,l=0;
+        for(int i=0;i<s.size();i++){//不断尝试左端点i开始的最小长度
+            while(r<s.size()&&needCnt>0){//只要还需要字符,右移滑动窗口
+                if(hash[s[r]]!=INT_MIN){//只考虑需要的字母
+                    if(hash[s[r]]>0)needCnt--;  //仍需要,计数
+                    hash[s[r]]--;//不缺的也要计数
+                }
+                r++;
+            }//到此收集完所有需要的字母,或者遍历完s仍不够
+            if(needCnt==0&&r-i<res){//收集完毕,且结果更好
+                res=r-i;
+                l=i;
+            }
+            //检查下个左端点,处理现在的左端点
+            if(hash[s[i]]!=INT_MIN){
+                if(hash[s[i]]==0){//等于0说明正好够,移除后需要特殊处理
+                    needCnt++;
+                }
+                hash[s[i]]++;//小于0说明还多余
+            }
+        }
+        return res<INT_MAX?s.substr(l,res):"";
+    }
+};
