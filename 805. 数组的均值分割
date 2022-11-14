@@ -1,0 +1,25 @@
+class Solution:
+    def splitArraySameAverage(self, nums: List[int]) -> bool:
+        n = len(nums)
+        if n == 1:
+            return False
+
+        s = sum(nums)
+        for i in range(n):
+            nums[i] = nums[i] * n - s
+
+        m = n // 2
+        left = set()
+        for i in range(1, 1 << m):#一共有2^m种取法
+            tot = sum(x for j, x in enumerate(nums[:m]) if i >> j & 1)
+            if tot == 0:
+                return True #部分和为0,则剩下的组成另一半和也为0
+            left.add(tot)#保存左侧所有可能的sum
+
+        rsum = sum(nums[m:])
+        for i in range(1, 1 << (n - m)):
+            tot = sum(x for j, x in enumerate(nums[m:]) if i >> j & 1)
+            if tot == 0 or rsum != tot and -tot in left:#部分和为0,则剩下的组成另一半和也为0
+                return True
+        return False
+
