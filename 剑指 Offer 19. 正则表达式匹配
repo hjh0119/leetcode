@@ -1,0 +1,32 @@
+// .任意,*任意次
+//dp[i][j]表示s的前i个字符与p中的前j个字符相匹配
+//正向遍历所有i,j的情况
+class Solution {
+public:
+    bool isMatch(string s, string p) {
+        int m=s.size(),n=p.size();
+        vector<vector<bool>> dp(m+1,vector<bool>(n+1));
+        for(int i=0;i<=m;i++){
+            for(int j=0;j<=n;j++){
+                if(j==0)dp[i][j] = i==0;//当j=0,只有i=0时可以匹配
+                else{
+                    if(p[j-1]!='*'){//p的前j个字符的最后一个字符不为'*',说明 字母/'.' 二选一
+                        if(i>=1&&(s[i-1]==p[j-1]||p[j-1]=='.')){//两边最后一个字符匹配
+                            dp[i][j]=dp[i-1][j-1];
+                        }
+                        //else dp[i][j]=false; //这句加不加都对,因为初始dp的时候没有赋值默认为0,即false.也就是说当我们不对这样一个(i,j)做修改的时候,此时dp[i][j]就是false
+                    }
+                    else{
+                        // p[j-1]=='*'
+                        if(i>=1&&j>=2&&(s[i-1]==p[j-2]||p[j-2]=='.')){//可以匹配一次,往前看一步,因为遍历了所有(i,j),所以往前看一步就够了
+                            dp[i][j]=dp[i-1][j];
+                        }
+                        if(j>=2)
+                        dp[i][j]=(dp[i][j-2]||dp[i][j]);//*匹配0次
+                    }
+                }
+            }
+        }
+        return dp[m][n];
+    }
+};
