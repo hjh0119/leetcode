@@ -1,0 +1,20 @@
+class Solution {
+public:
+    bool isNumber(string s) {
+        int n=s.size(),start=0;
+        while(n>0&&s[n-1]==' ')n--;//去除末尾0
+        while(s[start]==' '&&start<n)start++;//去除开头0
+        bool numF=false,dotF=false,eF=false;
+        for(int i=start;i<n;i++){//所有可能字符的合法情况
+            if(s[i]>='0'&&s[i]<='9')numF=true;
+            else if(s[i]=='.'&&!dotF&&!eF)dotF=true;
+            else if((s[i]=='e'||s[i]=='E')&&!eF&&numF){
+                eF=true;
+                numF=false;
+            }
+            else if((s[i]=='+'||s[i]=='-')&&(i==start||s[i-1]=='e'||s[i-1]=='E'));
+            else return false;
+        }
+        return numF;
+    }
+};
