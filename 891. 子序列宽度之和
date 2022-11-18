@@ -1,0 +1,15 @@
+MOD = 10 ** 9 + 7
+pow2 = [1]
+for i in range(100000):
+    pow2.append(pow2[-1] * 2 % MOD)
+
+
+class Solution:
+    def sumSubseqWidths(self, nums: List[int]) -> int:
+        n = len(nums)
+        nums.sort()
+        res = 0
+        for i in range(n):
+            #pow2[i]表示作为最大值的个数,pow2[n-i-1]后表示作为最小值的个数
+            res = (res + nums[i] * (pow2[i] - pow2[n - i - 1] + MOD)) % MOD 
+        return res
