@@ -1,0 +1,38 @@
+class Solution {
+public:
+    Node* flatten(Node* head) {
+        if(head==nullptr)return head;
+        stack<Node*> s;
+        Node* cur=head;
+        while(head->next!=nullptr||head->child!=nullptr||!s.empty()){
+            //child和next都有,child优先,把next存入stack
+            if(head->next!=nullptr&&head->child!=nullptr){
+                s.push(head->next);
+                head->next=head->child;
+                head->child->prev=head;
+                head->child=nullptr;
+                head=head->next;
+            }
+            //没next有child
+            else if(head->child!=nullptr){
+                head->next=head->child;
+                head->child=nullptr;
+                head->next->prev=head;
+                head=head->next;
+            }
+            //child和next都没有,说明子链走到头了
+            else if(head->next==nullptr){
+                Node* n = s.top();
+                s.pop();
+                head->next=n;
+                n->prev=head;
+                head=n;
+            }
+            //只有next
+            else{
+                head=head->next;
+            }
+        }
+        return cur;
+    }
+};
