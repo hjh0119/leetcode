@@ -1,0 +1,32 @@
+class Solution {
+public:
+    bool isPalindrome(ListNode* head) {
+        ListNode*fast=head,*slow=head;
+        //找到中间节点slow
+        while(fast->next!=nullptr){
+            fast=fast->next->next;
+            if(fast==nullptr){
+                num_is_even=false;
+                break;
+            }
+            slow=slow->next;
+        }
+        //翻转后半段链表
+        ListNode* cur=slow->next,*pre=nullptr;
+        slow->next=nullptr;
+        while(cur!=nullptr){
+            ListNode* temp=cur->next;
+            cur->next=pre;
+            pre=cur;
+            cur=temp;
+        }
+        cur=head;
+        //依次对比前后两段链表
+        while(cur!=nullptr&&pre!=nullptr){
+            if(cur->val!=pre->val)return false;
+            cur=cur->next;
+            pre=pre->next;
+        }
+        return true;
+    }
+};
