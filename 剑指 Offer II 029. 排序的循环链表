@@ -1,0 +1,31 @@
+class Solution {
+public:
+    Node* insert(Node* head, int insertVal) {
+        if(head==nullptr){
+            Node* s = new Node(insertVal);
+            s->next = s;
+            return s;
+        }
+        if(head->next==head){
+            head->next=new Node(insertVal);
+            head->next->next=head;
+            return head;
+        }
+        Node* cur=head->next,* maxNode=head;
+        while(true){
+            if(cur->val<=insertVal&&cur->next->val>=insertVal){
+                Node* tmp = cur->next;
+                cur->next=new Node(insertVal);
+                cur->next->next=tmp;
+                return head;
+            }
+            if(cur->val>=maxNode->val)maxNode=cur;
+            if(cur==head){
+                maxNode->next=new Node(insertVal,maxNode->next);
+                return head;
+            }
+            cur=cur->next;
+        }
+        return head;
+    }
+};
