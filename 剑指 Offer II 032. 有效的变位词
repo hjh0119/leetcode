@@ -1,0 +1,11 @@
+class Solution {
+public:
+    bool isAnagram(string s, string t) {
+        int n =s.size(),m=t.size();
+        if(n!=m||s==t)return false;
+        vector<int> a(26),b(26);
+        for(auto &c:s)a[c-'a']++;
+        for(auto &c:t)b[c-'a']++;
+        return a==b;
+    }
+};
