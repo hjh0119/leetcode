@@ -1,0 +1,24 @@
+class Solution {
+public:
+    vector<vector<string>> groupAnagrams(vector<string>& strs) {
+        int n=strs.size();
+        vector<vector<int>> cnt(n,vector<int>(26,0));
+        map<vector<int>,int> m;
+        vector<vector<string>> res;
+        for(int i =0;i<n;i++){
+            for(char& c:strs[i]){
+                cnt[i][c-'a']++;
+            }
+            if(m.count(cnt[i])){
+                res[m[cnt[i]]].emplace_back(strs[i]);
+            }
+            else {
+                int sz =res.size();
+                m[cnt[i]]=sz;
+                res.push_back({strs[i]});
+            }
+        }
+        return res;
+
+    }
+};
