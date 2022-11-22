@@ -1,0 +1,20 @@
+class Solution {
+public:
+    int findMinDifference(vector<string>& timePoints) {
+        if(timePoints.size()>1440)return 0;
+        vector<int> time;
+        for(string& str:timePoints){
+            int t = (str[0]-'0')*600+(str[1]-'0')*60+(str[3]-'0')*10+(str[4]-'0');
+            time.emplace_back(t);
+        }
+        sort(time.begin(),time.end());
+        int res=1e8;
+        for(int i=1;i<time.size();i++){
+            int temp=time[i]-time[i-1];
+            res = min(res,temp);
+        }
+        int tmp = (1440+time[0]-time[time.size()-1])%(1440);
+        res = min(res,tmp);
+        return res;
+    }
+};
