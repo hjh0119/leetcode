@@ -1,0 +1,82 @@
+//stack
+class Solution {
+public:
+    vector<int> asteroidCollision(vector<int>& asteroids) {
+        stack<int> s;
+        int n = asteroids.size();
+        for(int i = 0;i < n; i++){
+            if(asteroids[i]<0){
+                if(s.empty()||s.top()<0)s.push(asteroids[i]);
+                else {
+                    //向右行星更大
+                    if(s.top()>-asteroids[i])continue;
+                    //同样大,抵消
+                    else if (s.top()+asteroids[i] == 0){
+                            s.pop();
+                    }
+                    //向左更大
+                    else{
+                        while(!s.empty()&&s.top()>0&&s.top()+asteroids[i]<0){
+                            s.pop();
+                        }
+                        if(!s.empty()&&s.top()+asteroids[i]>0)continue;
+                        else if(!s.empty()&&s.top()+asteroids[i]==0){
+                            s.pop();
+                            continue;
+                        }
+                        s.push(asteroids[i]);
+                    }
+                }
+            }
+            else{
+                s.push(asteroids[i]);
+            }
+        }
+        vector<int> res;
+        while(!s.empty()){
+            res.push_back(s.top());
+            s.pop();
+        }
+        reverse(res.begin(),res.end());
+        return res;
+    }
+};
+
+//用vector模拟stack,空间O(1)
+class Solution {
+public:
+    vector<int> asteroidCollision(vector<int>& asteroids) {
+        vector<int> s;
+        int n = asteroids.size();
+        for(int i = 0;i < n; i++){
+            if(asteroids[i]<0){
+                if(s.empty()||s.back()<0)s.push_back(asteroids[i]);
+                else {
+                    //向右行星更大
+                    if(s.back()>-asteroids[i])continue;
+                    //同样大,抵消
+                    else if (s.back()+asteroids[i] == 0){
+                            s.pop_back();
+                    }
+                    //向左更大
+                    else{
+                        while(!s.empty()&&s.back()>0&&s.back()+asteroids[i]<0){
+                            s.pop_back();
+                        }
+                        if(!s.empty()&&s.back()+asteroids[i]>0)continue;
+                        else if(!s.empty()&&s.back()+asteroids[i]==0){
+                            s.pop_back();
+                            continue;
+                        }
+                        s.push_back(asteroids[i]);
+                    }
+                }
+            }
+            else{
+                s.push_back(asteroids[i]);
+            }
+        }
+
+        return s;
+    }
+};
