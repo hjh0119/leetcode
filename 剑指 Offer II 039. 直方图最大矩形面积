@@ -1,0 +1,51 @@
+//暴力+剪枝,时间O(n2) 超时
+class Solution {
+public:
+    int largestRectangleArea(vector<int>& heights) {
+        int res = heights[0];
+        int n = heights.size();
+        for(int i = 0;i < n ;i++){
+            res = max(res,heights[i]);
+            if(i>0&&heights[i]<=heights[i-1])continue;
+            int tempMin = heights[i];
+            for(int j = i+1; j < n ;j++){
+                tempMin = min(tempMin,heights[j]);
+                int tempSize = (j-i+1)*tempMin;
+                res = max(res,tempSize);
+            }
+        }
+        return res;
+    }
+};
+
+//遍历高height,维护高为height[i]时的左右边界
+class Solution {
+public:
+    int largestRectangleArea(vector<int>& heights) {
+        int n = heights.size();
+  //      if(n==1)return heights[0];
+        vector<int> left(n);
+        vector<int> right(n);
+        stack<int> s;
+        //left不包含自身
+        for(int i = 0; i < n; i++){
+            while(!s.empty()&&heights[s.top()]>=heights[i])s.pop();
+            left[i] = s.empty()? i : i-s.top()-1;
+            s.push(i);
+        }
+        s = stack<int>();
+        //right包含自身
+        for(int i = n-1; i >= 0; i--){
+            while(!s.empty()&&heights[s.top()]>=heights[i])s.pop();
+            right[i] = s.empty()? n-i : s.top()-i;
+            s.push(i);
+        }
+        int res = 0;
+        for(int i = 0; i < n; i++){
+            int temp = heights[i]*(left[i]+right[i]);
+            res = max(res,temp);
+        }
+
+        return res;
+    }
+};
