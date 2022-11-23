@@ -1,0 +1,56 @@
+class Solution {
+public:
+    vector<int> dailyTemperatures(vector<int>& temperatures) {
+        int n =temperatures.size();
+        vector<int> res(n);
+        stack<int> s;
+
+        for(int i = n-1;i>=0;i--){
+            if(!s.empty()){
+                int idx = s.top();
+                int temp = temperatures[i];
+                if(temperatures[idx]>temp){
+                    res[i]=idx-i;
+                    s.push(i);
+                }
+                else{
+                    while(!s.empty()&&temp>=temperatures[s.top()])s.pop();
+                    
+                    if(s.empty()){
+                        s.push(i);
+                        res[i]=0;
+                    }
+                    else{
+                        res[i]=s.top()-i;
+                        s.push(i);
+                    }
+                }
+            }
+            else {
+                res[i]=0;
+                s.push(i);
+            }
+        }
+        return res;
+
+    }
+};
+
+//简洁版
+class Solution {
+public:
+    vector<int> dailyTemperatures(vector<int>& temperatures) {
+        int n =temperatures.size();
+        vector<int> res(n);
+        stack<int> s;
+
+        for(int i = n-1;i>=0;i--){
+            while(!s.empty()&&temperatures[s.top()]<=temperatures[i])s.pop();
+            if(s.empty())res[i]=0;
+            else res[i]=s.top()-i;
+            s.push(i);
+        }
+        return res;
+
+    }
+};
