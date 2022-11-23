@@ -1,0 +1,21 @@
+class Solution {
+public:
+    int count(int x){
+        int cnt=0;
+        while(x>0){
+            cnt+=(x%10);
+            x/=10;
+        }
+        return cnt;
+    }   
+    int countBalls(int lowLimit, int highLimit) {
+        unordered_map<int,int> hash;
+        int res = 0;
+        for(int i = lowLimit;i<=highLimit;++i){
+            int  cnt = count(i);
+            hash[cnt]++;
+            res = max(res,hash[cnt]);
+        }
+        return res;
+    }
+};
