@@ -1,0 +1,30 @@
+class MovingAverage {
+private:
+    queue<int> q;
+    int s;
+    int cnt;
+    int sum;
+public:
+    /** Initialize your data structure here. */
+    MovingAverage(int size) {
+        s=size;
+        cnt=0;
+        sum=0;
+    }
+    
+    double next(int val) {
+        cnt++;
+        if(cnt<=s){
+            sum+=val;
+            q.push(val);
+            return double(sum)/cnt;
+        }
+        else{
+            sum-=q.front();
+            sum+=val;
+            q.pop();
+            q.push(val);
+            return double(sum)/s;
+        }
+    }
+};
