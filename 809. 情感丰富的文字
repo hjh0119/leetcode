@@ -1,0 +1,35 @@
+class Solution {
+public:
+    int expressiveWords(string s, vector<string>& words) {
+        int cnt=0;
+        int n = s.size();
+        for(string&str:words){
+            int i,j;
+            int m = str.size();
+            bool flag = true;
+            for(i=0,j=0;i<n&&j<m;){
+                if(n<m)break;
+                int cnt_i=0,cnt_j=0;
+                int a=s[i];
+                while(i<n&&s[i]==a){
+                    i++;
+                    cnt_i++;
+                }
+                while(j<m&&str[j]==a){
+                    j++;
+                    cnt_j++;
+                }
+                if(cnt_i<cnt_j){
+                    flag = false;
+                    break;
+                }
+                if(cnt_i>cnt_j&&cnt_i<3){
+                    flag = false;
+                    break;
+                }
+            }
+            if(flag&&i==n&&j==m)cnt++;
+        }
+        return cnt;
+    }
+};
