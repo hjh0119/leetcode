@@ -1,0 +1,35 @@
+class CBTInserter {
+    queue<TreeNode*> q;
+    TreeNode* root;
+
+public:
+    CBTInserter(TreeNode* root) {
+        this->root = root;
+        q.push(root);
+        while(q.front()->left&&q.front()->right){
+            q.push(q.front()->left);
+            q.push(q.front()->right);
+            q.pop();
+        }
+        if(q.front()->left)q.push(q.front()->left);
+    }
+    
+    int insert(int v) {
+        TreeNode* tmp = q.front();
+        int res = tmp->val;
+        if(!tmp->left){
+            tmp->left = new TreeNode(v);
+            q.push(tmp->left);
+        }
+        else{
+            tmp->right = new TreeNode(v);
+            q.push(tmp->right);
+            q.pop();
+        }
+        return res;
+    }
+    
+    TreeNode* get_root() {
+        return root;
+    }
+};
