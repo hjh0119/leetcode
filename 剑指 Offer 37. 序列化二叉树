@@ -1,0 +1,70 @@
+class Codec {
+public:
+    string serialize(TreeNode* root) {
+        queue<TreeNode*> q;
+        string res;
+        q.push(root);
+        while(!q.empty()){
+            TreeNode* tmp = q.front();
+            q.pop();
+            if(tmp!=nullptr){
+                res.append(to_string(tmp->val).append(","));
+                q.push(tmp->left);
+                q.push(tmp->right);
+            }
+            else{
+                res.append("None,");
+            }
+        }
+        return res;
+    }
+
+    // Decodes your encoded data to tree.
+    TreeNode* deserialize(string data) {
+      //  cout<<data<<endl;
+        string temp;
+        list<string> List;
+        for(char &c:data){
+            if(c!=','){
+                temp.push_back(c);
+            }
+            else{
+                List.push_back(temp);
+                temp.clear();
+            }
+        }  
+      //  for(auto it=List.begin();it!=List.end();it++)cout<<*it<<" ";
+        queue<TreeNode*> q;
+        if(List.front()=="None")return nullptr;
+        TreeNode* head = new TreeNode(stoi(List.front()));
+        List.pop_front();
+        q.push(head);
+        while(!List.empty()){
+            if(!q.empty()){
+                TreeNode* node = q.front();
+                q.pop();
+
+                if(List.front()!="None"){
+                    node->left = new TreeNode(stoi(List.front()));
+                    List.pop_front();
+                    q.push(node->left);
+                }
+                else{
+                    List.pop_front();
+                }
+                if(List.front()!="None"){
+                    node->right = new TreeNode(stoi(List.front()));
+                    List.pop_front();
+                    q.push(node->right);
+                }
+                else{
+                    List.pop_front();
+                }
+            }
+            else{
+                break;
+            }
+        }
+        return head;
+    }
+};
