@@ -1,0 +1,39 @@
+class Solution {
+public:
+    const int mod = 1e9+7;
+    int dijkstra(vector<vector<pair<int,int>>>&g,int start){
+        int res = 1,target = g.size()-1;
+        vector<long> dist(g.size(),LONG_MAX);
+        vector<int> cnt(g.size(),0);
+        cnt[0] = 1;
+        priority_queue<pair<long,int>,vector<pair<long,int>>,greater<>> pq;
+        dist[start] = 0;
+        pq.emplace(0,start);
+        while(!pq.empty()){
+            auto [d,x] = pq.top();
+            pq.pop();
+            if(d>dist[x])continue;
+            for(auto [y,wd]: g[x]){
+                long new_d = wd + d;
+                if(new_d==dist[y]){
+                    cnt[y] = (cnt[y] + cnt[x]) % mod;
+                }
+                if(new_d < dist[y]){
+                    dist[y] = new_d ;
+                    pq.emplace(new_d,y);
+                    cnt[y] = cnt[x] % mod;
+                }
+            }
+        }
+        return cnt[target];
+    }
+    int countPaths(int n, vector<vector<int>>& roads) {
+        vector<vector<pair<int,int>>> g(n);
+        for(auto &e:roads){
+            int u = e[0], v = e[1], dis = e[2];
+            g[u].emplace_back(v,dis);
+            g[v].emplace_back(u,dis);
+        }
+        return dijkstra(g,0);
+    }
+};
