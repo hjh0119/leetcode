@@ -1,0 +1,44 @@
+//dijkstra
+class Solution {
+public:
+    vector<int> dijkstra(vector<vector<pair<int,int>>> &g,int start){
+        vector<int> dist(g.size(), INT_MAX);//目前start到其他点的最短距离
+        dist[start] = 0;
+        priority_queue<pair<int,int>,vector<pair<int,int>>,greater<>> pq;//小顶堆,距离最近的优先
+        pq.emplace(0,start);
+        while(!pq.empty()){
+            auto [d,x] = pq.top();//每次弹出离start最近的vertex
+            pq.pop();
+            if(d > dist[x])continue;
+            for(auto [y,wt] : g[x]){//更新start到某个vertex x最短距离后,更新到x的所有邻居y的距离
+                int new_d = wt + dist[x];
+                if(new_d < dist[y]){
+                    dist[y] = new_d;
+                    pq.emplace(new_d,y);
+                }
+            }
+        }
+        return dist;
+    }
+    int reachableNodes(vector<vector<int>>& edges, int maxMoves, int n) {
+        vector<vector<pair<int,int>>> g(n);
+        for(auto &e : edges){//建图
+            int u = e[0], v = e[1], cnt = e[2];
+            g[u].emplace_back(v,cnt+1);
+            g[v].emplace_back(u,cnt+1);
+        }
+        auto dist = dijkstra(g,0);
+        int ans = 0;
+        for(int d : dist){
+            if(d<=maxMoves)++ans;//计算能到达的vertex数
+        }
+        for(auto &e:edges){//遍历每条边最多能访问的点数
+            int u = e[0], v = e[1], cnt = e[2];
+            int a = max(maxMoves-dist[u],0);
+            int b = max(maxMoves-dist[v],0);
+            ans += min(a+b,cnt);
+        }
+        return ans;
+
+    }
+};
