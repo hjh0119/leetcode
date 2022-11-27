@@ -1,0 +1,37 @@
+//用大顶堆和小顶堆维护左右一半的数据
+class MedianFinder {
+private:
+    priority_queue<int> pq_left;
+    priority_queue<int,vector<int>,greater<>> pq_right;
+public:
+    /** initialize your data structure here. */
+    MedianFinder() {
+    }
+    
+    void addNum(int num) {
+        if(pq_left.empty()||num <= pq_left.top()){
+            pq_left.push(num);
+            if(pq_right.size() + 1 < pq_left.size()){
+                pq_right.push(pq_left.top());
+                pq_left.pop();
+            }
+        }
+        else{
+            pq_right.push(num);
+            if(pq_left.size() + 1 < pq_right.size()){
+                pq_left.push(pq_right.top());
+                pq_right.pop();
+            }
+        }
+    }
+    
+    double findMedian() {
+        if(pq_right.size() == pq_left.size()){
+            return double(pq_left.top()+pq_right.top())/2;
+        }
+        else{
+            if(pq_right.size()>pq_left.size())return pq_right.top();
+        }
+        return pq_left.top();
+    }
+};
