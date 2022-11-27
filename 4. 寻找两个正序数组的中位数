@@ -1,0 +1,28 @@
+class Solution {
+public:
+    double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
+        int m = nums1.size();
+        int n = nums2.size();
+        int left = (m + n + 1) / 2;
+        int right = (m + n + 2) / 2;
+        //统一奇数和偶数情况
+        return double(findkth(nums1,0,nums2,0,left)+findkth(nums1,0,nums2,0,right))/2;
+    }
+
+    int findkth(vector<int>& a, int i, vector<int>& b, int j, int k){
+        
+        if(i >= a.size())return b[j + k -1];
+        if(j >= b.size())return a[i + k -1];
+        
+        if(k == 1)return min(a[i],b[j]);
+        
+        //对比两边中间值大小
+        int mid1 = (i + k / 2 - 1 < a.size())? a[i + k/2 - 1]: INT_MAX;
+        int mid2 = (j + k / 2 - 1 < b.size())? b[j + k/2 - 1]: INT_MAX;
+        
+        //小的一方减去k/2个
+        if(mid1 < mid2) return findkth(a, i + k/2, b, j, k-k/2);
+        else return findkth(a, i, b, j + k/2, k-k/2);
+
+    }
+};
