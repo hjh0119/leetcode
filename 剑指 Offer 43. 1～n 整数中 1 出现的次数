@@ -1,0 +1,26 @@
+//处理每一位出现1的次数
+//将数分为高位的high,目前处理的位cur,低位low,基数digit
+//cur分为0,1,2~9三种情况
+//cur为0,高位从0~high-1,cur才会出现1,一共出现 high * digit次
+//cur为1,高位从0~high-1,cur为1的次数与0相同,高位为high,low位从0~low各出现一次1,总共 high*digit + low + 1次
+//cur为2,高位从0~high,cur都会出现1, 总共 (high+1) * digit次
+
+
+class Solution {
+public:
+    int countDigitOne(int n) {
+        long digit = 1;
+        int res = 0;
+        int high = n / 10, cur = n % 10, low = 0;
+        while(high !=0 || cur != 0){
+            if(cur == 0)res += high * digit;
+            else if(cur == 1)res +=high*digit + low + 1;
+            else res += (high+1) * digit;
+            low += cur * digit;
+            cur =  high % 10;
+            high /= 10;
+            digit *= 10;
+        }
+        return res;
+    }
+};
