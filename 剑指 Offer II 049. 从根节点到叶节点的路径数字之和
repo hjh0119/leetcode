@@ -1,0 +1,15 @@
+class Solution {
+public:
+    int res = 0;
+    void dfs(TreeNode* root,int value){
+        value = value * 10 + root->val;
+        if(root->left!=nullptr)dfs(root->left,value);
+        if(root->right!=nullptr)dfs(root->right,value);
+        if(root->left == nullptr&& root->right == nullptr)res += value;
+        return ;
+    }
+    int sumNumbers(TreeNode* root) {
+        dfs(root,0);
+        return res;
+    }
+};
