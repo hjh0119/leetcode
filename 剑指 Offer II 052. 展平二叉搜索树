@@ -1,0 +1,20 @@
+class Solution {
+public:
+    vector<int> v;
+    void inOrder(TreeNode* root){
+        if(root->left!=nullptr) inOrder(root->left);
+        v.push_back(root->val);
+        if(root->right!=nullptr) inOrder(root->right);
+        return;
+    }
+    TreeNode* increasingBST(TreeNode* root) {
+        inOrder(root);
+        TreeNode* dummy = new TreeNode(-1);
+        TreeNode* curNode = dummy;
+        for(int each : v){
+            curNode->right = new TreeNode(each);
+            curNode = curNode->right;
+        };
+        return dummy->right;
+    }
+};
