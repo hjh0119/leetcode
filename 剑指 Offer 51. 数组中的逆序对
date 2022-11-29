@@ -1,0 +1,67 @@
+//利用单调栈剪枝再暴力,超时
+class Solution {
+public:
+    int reversePairs(vector<int>& nums) {
+        //先单调栈找到第一个小的数,然后再暴力?
+        int n = nums.size();
+        //idx保存每个数字离自己最近的较小数的下标,s作为堆栈
+        vector<int> idx(n),s;
+        for(int i = n-1; i >= 0; i--){
+            if(!s.empty()){
+                while(!s.empty()&&nums[s.back()]>=nums[i])s.pop_back();
+                idx[i] = s.empty()? n : s.back();//用n表示没有较小数
+                s.push_back(i);
+            }       
+            else{
+                idx[i] = n;
+                s.push_back(i);
+            }    
+        }
+        int res = 0;
+        for(int i = 0; i < n; i++){
+            int curCnt = 0;
+            for(int j = idx[i]; j < n; j++){
+                if(nums[j]<nums[i])curCnt++;
+                else {
+                    if(idx[j] != n)j = idx[j] - 1;
+                }
+            }
+            res += curCnt;
+        }
+        return res;
+    }
+};
+
+//归并排序
+class Solution {
+private:
+    int mergeSort(int l, int r, vector<int>& nums, vector<int>& tmp){
+        if(l >= r) return 0;
+        int m = (l + r) / 2;
+        //分
+        int res = mergeSort(l,m,nums,tmp) + mergeSort(m+1,r,nums,tmp);
+        //并
+        int i = l, j = m + 1;
+        for(int k = l; k <= r; k++)
+            tmp[k] = nums[k];
+        for(int k = l; k <= r; k++){
+            if(i == m + 1){
+                nums[k] = tmp[j++];
+            }
+            else if(j == r+1 || tmp[i] <= tmp[j]){
+                nums[k] = tmp[i++];
+            }
+            else{
+                nums[k] = tmp[j++];
+                res += m - i + 1;
+            }
+        }
+        return res;
+    }
+public:
+    int reversePairs(vector<int>& nums) {
+        int n = nums.size();
+        vector<int> tmp(n);
+        return mergeSort(0,n-1,nums,tmp);
+    }
+};
