@@ -1,0 +1,33 @@
+class Solution {
+private:
+    int digitSum(int a, int b){
+        int res = 0;
+        while(a>0){
+            res += a % 10;
+            a /= 10;
+        }
+        while(b>0){
+            res += b % 10;
+            b /= 10;
+        }
+        return res;
+    }
+    int row,col,res=0;
+    void dfs(int x,int y,int k,vector<vector<bool>>&visit){
+        if(x<0||y<0||x>=row||y>=col||visit[x][y]||digitSum(x,y)>k)return ;
+        visit[x][y]=true;
+        res++;
+        dfs(x + 1, y, k,visit);
+        dfs(x - 1, y, k,visit);
+        dfs(x, y - 1, k,visit);
+        dfs(x, y + 1, k,visit);
+    }
+public:
+    int movingCount(int m, int n, int k) {
+        row = m;
+        col = n;
+        vector<vector<bool>> visit(m,vector<bool>(n,false));
+        dfs(0,0,k,visit);
+        return res;
+    }
+};
