@@ -1,0 +1,70 @@
+// 双栈+双字典实现 勉强能过
+class FreqStack {
+private:
+    unordered_map<int,int> frequent;
+    unordered_map<int,int> freqFreq;
+    stack<int> s;
+    stack<int> s2;
+    int maxFreq;
+public:
+    FreqStack() {
+        maxFreq = 0;
+    }
+    
+    void push(int val) {
+        if(frequent[val]!=0)freqFreq[frequent[val]]--;
+        frequent[val]++;
+        freqFreq[frequent[val]]++;
+        maxFreq = max(maxFreq,frequent[val]);
+        s.push(val);
+    }
+    int pop() {
+        int res = 0;
+        while(!s.empty()){
+            if(frequent[s.top()] == maxFreq){
+                res = s.top();
+                s.pop();
+                break;
+            }
+            else {
+                s2.push(s.top());
+                s.pop();
+            }
+        }
+        while(!s2.empty()){
+            s.push(s2.top());
+            s2.pop();
+        }
+        frequent[res]--;
+        freqFreq[maxFreq]--;
+        freqFreq[maxFreq-1]++;
+        if(freqFreq[maxFreq]<=0)maxFreq--;
+        return res;
+    }
+};
+
+//官解,用字典维护不同频率的栈
+class FreqStack {
+private:
+    unordered_map<int,int> freq;
+    unordered_map<int,stack<int>> group;
+    int maxFreq;
+public:
+    FreqStack() {
+        maxFreq = 0;
+    }
+    
+    void push(int val) {
+        freq[val]++;
+        group[freq[val]].push(val);
+        maxFreq = max(maxFreq,freq[val]);
+
+    }
+    int pop() {
+        int val = group[maxFreq].top();
+        freq[val]--;
+        group[maxFreq].pop();
+        if(group[maxFreq].empty())maxFreq--;
+        return val;
+    }
+};
