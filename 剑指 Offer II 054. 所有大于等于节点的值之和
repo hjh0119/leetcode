@@ -1,0 +1,21 @@
+class Solution {
+public:
+    int dfs(TreeNode* root){
+        if(root == nullptr)return 0;
+        int res = root->val;
+        res += dfs(root->left) + dfs(root->right);
+        return res;
+    }
+    void inOrder(TreeNode* root, int& sum){
+        if(root->left != nullptr) inOrder(root->left, sum);
+        sum -= root->val;
+        root->val += sum;
+        if(root->right != nullptr) inOrder(root->right, sum);
+    }
+    TreeNode* convertBST(TreeNode* root) {
+        if(root == nullptr)return　root;
+        int sum = dfs(root);
+        inOrder(root,sum);
+        return root;
+    }
+};
