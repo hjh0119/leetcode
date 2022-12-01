@@ -1,0 +1,26 @@
+//用栈模拟中序遍历
+class BSTIterator {
+private:
+    TreeNode* cur;
+    stack<TreeNode*> s;
+public:
+    BSTIterator(TreeNode* root) {
+        cur = root;
+    }
+    
+    int next() {
+        while(cur != nullptr){
+            s.push(cur);
+            cur = cur->left;
+        }
+        cur = s.top();
+        s.pop();
+        int ret = cur->val;
+        cur = cur -> right;
+        return ret;
+    }
+    
+    bool hasNext() {
+        return cur!=nullptr || !s.empty();
+    }
+};
