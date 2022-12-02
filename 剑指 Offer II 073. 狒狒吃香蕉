@@ -1,0 +1,25 @@
+class Solution {
+public:
+    long getTime(const vector<int>& p,int speed){
+        long t = 0;
+        for(int pile : p){
+            int curtime = (pile + speed -1) / speed;
+            t += curtime;
+        }
+        return t;
+    }
+    int minEatingSpeed(vector<int>& piles, int h) {
+        int low = 1, high = 0;
+        for(auto p : piles)high = max(high, p);
+        while(low < high){
+            int speed = (high - low) / 2 + low;
+            long time = getTime(piles,speed);
+            if(time <= h){
+                high = speed;
+            }else{
+                low = speed + 1;
+            }
+        }
+        return high;
+    }
+};
