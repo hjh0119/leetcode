@@ -1,0 +1,28 @@
+//官解,dp
+class Solution {
+public:
+    vector<int> minOperations(string boxes) {
+        //left表示当前位置左侧小球数,right表示右侧小球数
+        int left = boxes[0]-'0',right = 0, op = 0;
+        int n = boxes.size();
+        vector<int> res(n);
+        //首先计算所有小球到最左侧的操作数
+        for(int i = 1; i < n; i++){
+            if(boxes[i] == '1'){
+                right++;
+                op += i;
+            }
+        }
+        res[0] = op;
+        //op[i] = op[i-1] + left - right
+        for(int i = 1; i < n; i++){
+            op += left - right;
+            if(boxes[i] == '1'){
+                left++;
+                right--;
+            }
+            res[i] = op;
+        }
+        return res;
+    }
+};
