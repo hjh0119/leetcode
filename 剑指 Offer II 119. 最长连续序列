@@ -1,0 +1,38 @@
+//排序后遍历,时间O(nlogn)
+class Solution {
+public:
+    int longestConsecutive(vector<int>& nums) {
+        if(nums.size() == 0)return 0;
+        sort(nums.begin(),nums.end());
+        int res = 1,cur = 1;
+        for(int i = 0; i < nums.size()-1; i++){
+            if(nums[i+1] == nums[i] + 1){
+                cur++;
+                res = max(res,cur);
+            }
+            else if(nums[i+1] == nums[i])continue;
+            else cur = 1;
+        }
+        return res;
+    }
+};
+
+//hash, 时间O(n)
+class Solution {
+public:
+    int longestConsecutive(vector<int>& nums) {
+        unordered_set<int> s;
+        int res = 0;
+        for(auto num: nums){
+            s.insert(num);
+        }
+        for(auto each: s){
+            if(s.count(each-1))continue;
+            int tmpValue = each;
+            int tmpCnt = 1;
+            while(s.count(++tmpValue))tmpCnt++;
+            res = max(res,tmpCnt);
+        }
+        return res;
+    }
+};
