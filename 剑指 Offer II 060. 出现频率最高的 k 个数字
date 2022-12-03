@@ -1,0 +1,29 @@
+class Solution {
+public:
+    static bool cmp(pair<int,int> &n,pair<int,int> &m){
+        return n.second > m.second;
+    }
+    vector<int> topKFrequent(vector<int>& nums, int k) {
+        priority_queue<pair<int, int>, vector<pair<int, int>>, decltype(&cmp)> q(cmp);
+        unordered_map<int,int> hash;
+        for(auto &num : nums){
+            hash[num]++;
+        }
+        for(auto &[x,y]:hash){
+            if(q.size()==k){
+                if(q.top().second < y){
+                    q.pop();
+                    q.emplace(x,y);
+                }
+            }
+            else q.emplace(x,y);
+            
+        }
+        vector<int> res;
+        while(!q.empty()){
+            res.emplace_back(q.top().first);
+            q.pop();
+        }
+        return res;
+    }
+};
