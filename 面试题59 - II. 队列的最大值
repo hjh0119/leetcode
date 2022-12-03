@@ -1,0 +1,29 @@
+//维护单调队列
+class MaxQueue {
+private:
+    queue<int> q;
+    deque<int> help;
+public:
+    MaxQueue() {
+    }
+    
+    int max_value() {
+        return q.empty()? -1 : help.front();
+    }
+    
+    void push_back(int value) {
+        q.push(value);
+        while(!help.empty()&&help.back()<value){
+            help.pop_back();
+        }
+        help.push_back(value);
+    }
+    
+    int pop_front() {
+        if(q.empty())return -1;
+        int val = q.front();
+        q.pop();
+        if(help.front() == val)help.pop_front();
+        return val;
+    }
+};
