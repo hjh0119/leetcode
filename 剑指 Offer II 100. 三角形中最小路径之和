@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int minimumTotal(vector<vector<int>>& triangle) {
+        int depth = triangle.size();
+        vector<int> dp(depth);
+        for (int i = 0; i < depth; i++){
+            vector<int> tmp(dp);
+            for (int j = 0; j <= i; j++){
+                if (i != 0){
+                    if (j-1>=0&&j<i) dp[j] = min(tmp[j-1], tmp[j]) + triangle[i][j];
+                    else if(j==i)dp[j] = tmp[j-1] + triangle[i][j];
+                    else dp[j] = tmp[j] + triangle[i][j];
+                }else {
+                    dp[i] = triangle[i][j];
+                }
+            }
+        }
+        int res = INT_MAX;
+        for(int num: dp){
+            res = min(res,num);
+        }
+        return res;
+    }
+};
