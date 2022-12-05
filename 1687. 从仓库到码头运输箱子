@@ -1,0 +1,42 @@
+class Solution {
+public:
+    int boxDelivering(vector<vector<int>>& boxes, int portsCount, int maxBoxes, int maxWeight) {
+        int n = boxes.size();
+        //neg保存相邻港口不同的前缀和,neg[i]表示从第1个港口到第i个港口,相邻但不同港口的box数
+        vector<int> neg(n+1);
+        //W保存weight的前缀和,W[i]表示从第1个box到第i个box的箱子总重
+        vector<long long> W(n+1);
+        for(int i = 1; i <= n; i++){
+            if(i>1){
+                neg[i] = neg[i-1] + (boxes[i-2][0] != boxes[i-1][0]);
+            }
+            W[i] = W[i-1] + boxes[i-1][1];
+        }
+
+        //f(i)表示运输前i个箱子所需最短行程 f(i)=min{f(j)-neg(j+1)}+neg(i)+2;
+        //设g(j) = f(j)-neg(j+1)
+        vector<int> f(n+1),g(n+1);
+        //维护一个j的单调队列,满足g[j]的单调
+        deque<int> opt = {0};
+
+        for(int i = 1; i <= n; i++){
+            //淘汰超出要求的j
+            while(i - opt.front() > maxBoxes || W[i] - W[opt.front()] > maxWeight){
+                opt.pop_front();
+            }
+            //当前front即为最优j
+            f[i] = g[opt.front()] + neg[i] + 2;
+
+            //当i == n 不用继续维护队列,退出循环
+            if(i != n){
+                g[i] = f[i] - neg[i+1];
+                //维护单调队列,保证opt中g的单调递增
+                while(!opt.empty() && g[i] <= g[opt.back()]){
+                    opt.pop_back();
+                }
+                opt.push_back(i);
+            }
+        }
+        return f[n];
+    }
+};
