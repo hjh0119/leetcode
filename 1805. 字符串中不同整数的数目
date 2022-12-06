@@ -1,0 +1,42 @@
+class Solution {
+public:
+    int numDifferentIntegers(string word) {
+        string path = "";
+        set<string> s;
+        s.insert(path);
+        int res = 0;
+        bool flag = false;
+        for(int i = 0; i < word.size(); i++){
+            if((word[i]>='a' && word[i]<='z')){
+                if(flag&&!s.count(path)){
+                    //cout<<path<<" ";
+                    res++;
+                    //cout<<"res="<<" "<<res<<endl;
+                    s.insert(path);
+                }
+                flag = false;
+                path.clear();
+            }
+            else if(i==word.size()-1){
+                path.push_back(word[i]);
+                if(!s.count(path)){
+                    //cout<<path<<" ";
+                    res++;
+                    //cout<<"res="<<" "<<res;
+                    s.insert(path);
+                }
+            }
+            else if(!flag&&word[i]=='0'){
+                if(word[i+1]>='a'&&word[i+1]<='z'){
+                    flag = true;
+                    path.push_back('0');
+                }
+            }
+            else{
+                flag=true;
+                path.push_back(word[i]);
+            }
+        }
+        return res;
+    }
+};
