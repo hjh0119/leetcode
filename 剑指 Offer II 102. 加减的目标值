@@ -1,0 +1,44 @@
+//dp,时间O(n(sum-target)),空间(n(sum-target))
+class Solution {
+public:
+    int findTargetSumWays(vector<int>& nums, int target) {
+        int sum = 0, n = nums.size();
+        for(int num: nums)sum+=num;
+        target = (sum - target);
+        if(target<0 || target%2 != 0)return 0;
+        else target /= 2;
+        //DP,dp[i][j]表示前i个数选取元素等于j的方案数
+        //初始化 dp[0][0] = 1,dp[0][>=1] = 0;
+        vector<vector<int>> dp(n+1,vector<int>(target+1,0));
+        dp[0][0] = 1;
+        for(int i = 1; i <= n; i++){
+            for(int j = 0; j <= target; j++){
+                dp[i][j] = dp[i-1][j];
+                if(nums[i-1] <= j)dp[i][j] += dp[i-1][j-nums[i-1]];
+            }
+        }
+        return dp[n][target];
+    }
+};
+
+//优化dp,滚动数组,时间(n(sum-target)),空间(sum-target)
+class Solution {
+public:
+    int findTargetSumWays(vector<int>& nums, int target) {
+        int sum = 0, n = nums.size();
+        for(int num: nums)sum+=num;
+        target = (sum - target);
+        if(target<0 || target%2 != 0)return 0;
+        else target /= 2;
+        //DP,dp[i][j]表示前i个数选取元素等于j的方案数
+        //初始化 dp[0][0] = 1,dp[0][>=1] = 0;
+        vector<int> dp(target+1);
+        dp[0]= 1;
+        for(int i = 1; i <= n; i++){
+            for(int j = target; j>= nums[i-1]; j--){
+                dp[j] += dp[j-nums[i-1]];
+            }
+        }
+        return dp[target];
+    }
+};
