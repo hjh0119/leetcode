@@ -1,0 +1,56 @@
+//官解,bfs
+class Solution {
+public:
+    vector<double> calcEquation(vector<vector<string>>& equations, vector<double>& values, vector<vector<string>>& queries) {
+        int nvars = 0;
+        unordered_map <string,int> variables;
+        //记录所有的点
+        int n = equations.size();
+        for (int i = 0; i < n; i++){
+            if (!variables.count(equations[i][0])){
+                variables[equations[i][0]] = nvars++;
+            }
+            if (!variables.count(equations[i][1])){
+                variables[equations[i][1]] = nvars++;
+            }
+        }
+        //构图
+        vector<vector<pair<int,double>>> edges(nvars);
+        for(int i = 0; i < n; i++){
+            int va =  variables[equations[i][0]], vb = variables[equations[i][1]];
+            edges[va].emplace_back(vb,values[i]);
+            edges[vb].emplace_back(va,1.0/values[i]);
+        }
+        //bfs
+        vector<double> res;
+        for(const auto& q: queries){
+            double result = -1.0;
+            if(variables.count(q[0])&&variables.count(q[1])){
+               int ia = variables[q[0]], ib = variables[q[1]];
+               if(ia == ib){
+                    result = 1.0;
+               } else {
+                    queue<int> points;
+                    points.push(ia);
+                    vector<double> ratios(nvars,-1.0);
+                    ratios[ia] = 1.0;
+
+                    while(!points.empty() && ratios[ib] < 0){
+                        int x = points.front();
+                        points.pop();
+
+                        for(const auto [y,val]: edges[x]){
+                            if(ratios[y] < 0){
+                                ratios[y] = ratios[x] * val;
+                                points.push(y);
+                            }
+                        }
+                    }
+                    result = ratios[ib];
+               }
+            }
+            res.push_back(result);
+        }
+        return res;
+    }
+};
