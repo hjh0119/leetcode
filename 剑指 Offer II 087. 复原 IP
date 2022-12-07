@@ -1,0 +1,35 @@
+class Solution {
+public:
+    vector<string>result;
+    vector<string> restoreIpAddresses(string s) {
+        if(s.size()>12) return result;
+        BackTrack(s,0,0);
+        return result;
+    }
+    void BackTrack(string& s,int startIndex,int pointNum){
+        //退出条件,分完4段
+        if(pointNum==3){
+            if(isValid(s,startIndex,s.size()-1))
+            result.emplace_back(s);
+            return ;
+        }
+        for(int i=startIndex;i<s.size()&&i<startIndex+3;i++){
+            if(isValid(s,startIndex,i)){
+                s.insert(s.begin()+1+i,'.');
+                BackTrack(s,i+2,pointNum+1);
+                s.erase(s.begin()+i+1);
+            }
+            else return;
+        }
+    }
+    bool isValid(const string& s,int startIndex,int endIndex){
+        if(startIndex>endIndex)return false;
+        if(s[startIndex]=='0'&&startIndex!=endIndex)return false;
+        int num=0;
+        for(int i=startIndex;i<=endIndex;++i){
+            num=num*10+(s[i]-'0');
+            if(num>255)return false;
+        }
+        return true;
+    }
+};
