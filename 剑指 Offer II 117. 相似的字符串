@@ -1,0 +1,44 @@
+class Solution {
+public:
+    vector<int> father;
+
+    int find(int idx){
+        if(father[idx] != idx){
+            father[idx] = find(father[idx]);
+        }
+        return father[idx];
+    }
+
+    bool check(const string& s1, const string& s2, int len){
+        int cnt = 0;
+        for(int i = 0; i < len; i++){
+            if(s1[i] != s2[i]){
+                cnt++;
+                if(cnt > 2)return false;
+            }else continue;
+        }
+        return true;
+    }
+
+    int numSimilarGroups(vector<string>& strs) {
+        int len = strs[0].size(), n = strs.size();
+        father.resize(n);
+        for(int i = 0; i < n; i++){
+            father[i] = i;
+        }
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < n; j++){
+                int fi = find(i), fj = find(j);
+                if(fi == fj)continue;
+                if(check(strs[i],strs[j],len)){
+                    father[fi] = fj;
+                }
+            }
+        }
+        int res = 0;
+        for(int i = 0; i < n; i++){
+            if(father[i] == i)res++;
+        }
+        return res;
+    }
+};
