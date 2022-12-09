@@ -1,0 +1,34 @@
+class Solution {
+public:
+    bool sequenceReconstruction(vector<int>& nums, vector<vector<int>>& sequences) {
+        int n = nums.size();
+        vector<unordered_set<int>> graph(n+1);
+        vector<int> indeg(n+1);
+        for(auto &sequence : sequences){
+            for(int i = 1; i < sequence.size(); i++){
+                int prev = sequence[i-1], next = sequence[i];
+                graph[prev].insert(next);
+                indeg[next]++;
+            }
+        }
+        queue<int> q;
+
+        for(int i = 1; i <= n; i++){
+            if(indeg[i] == 0)q.push(i);
+        }
+
+        while(!q.empty()){
+            //结果不唯一
+            if(q.size() > 1)return false;
+            int num = q.front();
+            q.pop();
+            for(int next : graph[num]){
+                indeg[next]--;
+                if(indeg[next] == 0)q.push(next);
+            }
+        }
+
+        return true;
+
+    }
+};
