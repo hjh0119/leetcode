@@ -1,0 +1,11 @@
+//组合题,一共有(m-1)+(n-1),求其中C(m-1) ((m-1)+(n-1))
+class Solution {
+public:
+    int uniquePaths(int m, int n) {
+        long long ans = 1;
+        for (int x = n, y = 1; y < m; ++x, ++y) {
+            ans = ans * x / y;
+        }
+    return ans;
+    }
+};
