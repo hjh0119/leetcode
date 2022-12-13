@@ -1,0 +1,29 @@
+class Solution {
+public:
+    bool checkIfPangram(string sentence) {
+        int mask = 0;
+        for(int i = 0; i < 26; i++){
+            mask |= 1<<i;
+        }
+        int mask2 = 0;
+        for(int i = 0; i < sentence.size(); i++){
+            mask2 |= 1 << (sentence[i]-'a');
+        }
+        return mask == mask2;
+    }
+};
+
+class Solution {
+public:
+    bool checkIfPangram(string sentence) {
+        // int mask = 0;
+        // for(int i = 0; i < 26; i++){
+        //     mask |= 1<<i;
+        // }
+        int mask2 = 0;
+        for(int i = 0; i < sentence.size(); i++){
+            mask2 |= 1 << (sentence[i]-'a');
+        }
+        return 0x3ffffff == mask2;
+    }
+};
