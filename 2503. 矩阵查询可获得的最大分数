@@ -1,0 +1,54 @@
+class Solution {
+    const int dirs[4][2] = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+public:
+    int find(vector<int>&f, int idx){
+        if(f[idx] == idx)return idx;
+        return f[idx] = find(f,f[idx]);
+    }
+
+    void merge(vector<int>&f, vector<int>&size, int idx1, int idx2){
+        int f1 = find(f,idx1);
+        int f2 = find(f,idx2);
+        if(f1 != f2){
+            f[f1] = f2;
+            size[f2] += size[f1];
+        }
+    }
+
+    vector<int> maxPoints(vector<vector<int>>& grid, vector<int>& queries) {
+        int m = grid.size(), n = grid[0].size(), mn = m*n;
+        
+        vector<int> fa(mn),size(mn,1);
+        iota(fa.begin(),fa.end(),0);
+        int k = queries.size();
+        vector<int> res(k);
+
+        vector<int> index(k);
+        iota(index.begin(),index.end(),0);
+        sort(index.begin(),index.end(),[&](int q1,int q2){
+            return queries[q1]<queries[q2];
+        });
+
+        array<int, 3> a[mn];
+        for (int i = 0; i < m; ++i)
+            for (int j = 0; j < n; ++j)
+                a[i * n + j] = {grid[i][j], i, j};
+        sort(a, a + mn);
+
+        int j = 0;
+        for(auto i : index){
+            int q = queries[i];
+            for(; j < mn && a[j][0] < q; ++j){
+                int x = a[j][1], y = a[j][2];
+                for(auto &d:dirs){
+                    int x2 = x + d[0], y2 = y + d[1];
+                    if (0 <= x2 && x2 < m && 0 <= y2 && y2 < n && grid[x2][y2] < q)
+                        merge(fa,size,x * n + y, x2 * n + y2); 
+                }
+            }
+        if(grid[0][0]<q) res[i] = size[find(fa,0)];
+        }
+
+    return res;
+    }
+};
