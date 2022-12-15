@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int getLucky(string s, int k) {
+        int num = 0;
+        for(auto &c : s){
+            int tmp = c - 'a' + 1;
+            while(tmp>0){
+                num += tmp % 10;
+                tmp /=10;
+            }
+        }
+        while(k-- > 1){
+            int tmp = 0;
+            while(num>0){
+                tmp += num % 10;
+                num /= 10;
+            }
+            num = tmp;
+        }
+        return num;
+    }
+};
