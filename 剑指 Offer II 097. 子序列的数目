@@ -1,0 +1,72 @@
+//二维DP
+class Solution {
+public:
+    int numDistinct(string s, string t) {
+        /*
+        *dp[n][m] 表示s前n个字符能组成t前m个字符的种类
+        *状态转移:如果s[i-1] == t[j-1], dp[i][j] = dp[i-1][j-1] + dp[i-1][j]
+        *如果s[i] != t[j], dp[i][j] = dp[i-1][j]
+        */
+
+        int n = s.size(), m = t.size();
+        if(n < m) return 0;
+        vector<vector<long>> dp(n+1,vector<long>(m+1));
+        for(int i = 1;i <= m; i++){
+            dp[0][i] = 0;
+        }
+        for(int i = 0; i <= n; i++){
+            dp[i][0] = 1;
+        }
+        for(int i = 1; i <= n; i++){
+            for(int j = 1; j <= m; j++){
+                if(s[i-1] == t[j-1]){
+                    dp[i][j] = (dp[i-1][j-1] + dp[i-1][j]) % INT_MAX;
+                }else{
+                    dp[i][j] = dp[i-1][j];
+                }
+            }
+        }
+        return dp[n][m];
+    }
+};
+
+//一维DP
+class Solution {
+public:
+    int numDistinct(string s, string t) {
+        int n = s.size(), m = t.size();
+        if(n < m) return 0;
+        vector<long> dp(m+1);
+        dp[0] = 1;
+        for(int i = 1; i <= n; i++){
+            for(int j = m; j > 0; j--){
+                if(s[i-1] == t[j-1]){
+                    dp[j] = (dp[j-1] + dp[j]) % INT_MAX;
+                }
+            }
+        }
+        return dp[m];
+    }
+};
+
+//一维DP 节约一轮循环
+class Solution {
+public:
+    int numDistinct(string s, string t) {
+        int n = s.size(), m = t.size();
+        if(n < m) return 0;
+        vector<long> dp(m+1);
+        dp[0] = 1;
+        for(int i = 1; i < n; i++){
+            for(int j = m; j > 0; j--){
+                if(s[i-1] == t[j-1]){
+                    dp[j] = (dp[j-1] + dp[j]) % INT_MAX;
+                }
+            }
+        }
+        //最后一次循环可以直接判断结果
+        return s[n-1] == t[m-1]? dp[m] + dp[m-1] : dp[m];
+    }
+};
+
+
