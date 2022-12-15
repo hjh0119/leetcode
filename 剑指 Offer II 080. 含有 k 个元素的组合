@@ -1,0 +1,21 @@
+//简单回溯
+class Solution {
+public:
+    vector<vector<int>> res;
+    vector<int> path;
+    void backTrack(int n, int start, int pos, int k){
+        if(pos == k){
+            res.push_back(path);
+            return;
+        }
+        for(int i = start + 1; i <= n; i++){
+            path.push_back(i);
+            backTrack(n,i,pos+1,k);
+            path.pop_back();
+        }
+    }
+    vector<vector<int>> combine(int n, int k) {
+        backTrack(n,0,0,k);
+        return res;
+    }
+};
