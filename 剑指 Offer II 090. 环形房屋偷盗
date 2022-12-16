@@ -1,0 +1,21 @@
+class Solution {
+public:
+    int rob(vector<int>& nums) {
+        int n = nums.size();
+        if(n == 1)return nums[0];
+        int dp0 = 0,dp1 = nums[0];
+        for(int i = 1; i < n-1; i++){
+            int tmp0 = max(dp0,dp1);
+            dp1 = dp0+ nums[i];
+            dp0 = tmp0;
+        }
+        int res1 = max(dp0,dp1);
+        dp0 = 0, dp1 = nums[1];
+        for(int i = 2; i < n; i++){
+            int tmp0 = max(dp0,dp1);
+            dp1 = dp0+ nums[i];
+            dp0 = tmp0;
+        }
+        return max(res1,max(dp0,dp1));
+    }
+};
