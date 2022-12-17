@@ -1,0 +1,20 @@
+//官解,递归,对每个节点计算 1.该节点对上层节点最大的贡献 2.以该节点为父节点的最大路径和
+class Solution {
+private:
+    //保存每个节点的最大路径和
+    int max_sum = INT_MIN;
+public:
+    int maxGain(TreeNode* root){
+        if(root == nullptr) return 0;
+        int leftGain = max(maxGain(root->left),0);
+        int rightGain = max(maxGain(root->right),0);
+        int sum = root->val + leftGain + rightGain;
+        max_sum = max(max_sum,sum);
+        //该节点对上层节点最大贡献,只能取一边子树
+        return root->val + max(leftGain,rightGain);
+    }
+    int maxPathSum(TreeNode* root) {
+        maxGain(root);
+        return max_sum;
+    }
+};
