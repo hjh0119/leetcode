@@ -22,3 +22,30 @@ public:
         return res;
     }
 };
+
+//通过引用不额外使用空间,同时会修改原数组
+class Solution {
+public:
+    vector<vector<int>> merge(vector<vector<int>>& intervals) {
+        if(intervals.size() == 0){
+            return {};
+        }
+        sort(intervals.begin(),intervals.end());
+
+        vector<vector<int>> res;
+        vector<int> &pre = intervals[0];
+        for(int i = 1; i < intervals.size(); i++){
+            vector<int> &cur = intervals[i];
+            if(cur[0] > pre[1]){
+                res.push_back({pre[0],pre[1]});
+                pre = cur;
+            }
+            else{
+                pre[1] = max(cur[1],pre[1]);
+            }
+        }
+        res.push_back({pre[0],pre[1]});
+        return res;
+    }
+};
+
