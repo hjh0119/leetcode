@@ -1,0 +1,22 @@
+//dfs
+class Solution {
+public:
+    bool dfs(const vector<vector<int>>& graph, int st, int ed, vector<bool>& visited){
+        if(st == ed)return true;
+        //if(visited[st])return false;
+        visited[st] = true;
+        for(auto &v: graph[st]){
+            if(!visited[v] && dfs(graph,v,ed,visited))return true;
+        }
+        return false;
+    }
+    bool validPath(int n, vector<vector<int>>& edges, int source, int destination) {
+        vector<vector<int>> graph(n);
+        vector<bool> visited(n,false);
+        for(auto edge: edges){
+            graph[edge[0]].push_back(edge[1]);
+            graph[edge[1]].push_back(edge[0]);
+        }
+        return dfs(graph,source,destination,visited);
+    }
+};
