@@ -1,0 +1,61 @@
+//回溯1
+class Solution {
+public:
+    vector<string> res;
+    string path;
+    int lCount = 0, rCount = 0, n;
+    void backTrack(){
+        if(lCount > n || rCount > lCount)return;
+        if(path.size() == 2*n){
+            res.push_back(path);
+            return;
+        }
+        path.push_back('(');
+        lCount++;
+        backTrack();
+        path.pop_back();
+        lCount--;
+        path.push_back(')');
+        rCount++;
+        backTrack();
+        path.pop_back();
+        rCount--;
+    }
+    vector<string> generateParenthesis(int n) {
+        this->n = n;
+        backTrack();
+        return res;
+    }
+};
+
+//回溯2
+class Solution {
+public:
+    vector<string> res;
+    string path;
+    vector<char> par;
+    vector<int> cnt;
+    int n;
+    void backTrack(){
+        if(cnt[0] > n || cnt[1] > cnt[0])return;
+        if(path.size() == 2*n){
+            res.push_back(path);
+            return;
+        }
+        for(int i = 0; i < 2; i++){
+            path.push_back(par[i]);
+            cnt[i]++;
+            backTrack();
+            path.pop_back();
+            cnt[i]--;
+        }
+
+    }
+    vector<string> generateParenthesis(int n) {
+        this->n = n;
+        this->cnt.resize(2,0);
+        this->par = {'(',')'};
+        backTrack();
+        return res;
+    }
+};
