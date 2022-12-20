@@ -1,0 +1,51 @@
+//DP+hash
+class Solution {
+public:
+    int lenLongestFibSubseq(vector<int>& arr) {
+        unordered_map<int,int> idx;
+        int n = arr.size();
+        for (int i = 0; i < n; i++){
+            idx[arr[i]] = i;
+        }
+        vector<vector<int>> dp(n-1, vector<int>(n));
+        int ans = 0;
+        for(int i = 0; i < n; i++){
+            for(int k = i + 2; k < n; k++){
+                int j = idx.count(arr[k] - arr[i])? idx[arr[k]-arr[i]] : -1;
+                if(i < j && j < k){
+                    dp[j][k] = dp[i][j] + 1;
+                    ans = max(ans,dp[j][k]);
+                }
+            }
+        }
+        return ans == 0? ans : ans + 2;
+        
+    }
+};
+
+//DP双指针
+class Solution {
+public:
+    int lenLongestFibSubseq(vector<int>& arr) {
+        int n = arr.size();
+        vector<vector<int>> dp(n-1, vector<int>(n));
+        int res = 0;
+        for(int k = 2; k < n; k++){
+            int i = 0, j = k - 1;
+            while(i < j){
+                int sum = arr[i] + arr[j];
+                if(sum == arr[k]){
+                    dp[j][k] = dp[i][j] + 1;
+                    res = max(res,dp[j][k]);
+                    i++;
+                    j--;
+                }else if(sum < arr[k])
+                    i++;
+                else{
+                    j--;
+                }
+            }
+        }
+        return res == 0 ? 0 : res + 2;
+    }
+};
