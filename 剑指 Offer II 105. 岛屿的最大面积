@@ -1,0 +1,29 @@
+class Solution {
+public:
+    int n, m;
+    static constexpr int dirs[4][2] = {{1,0},{-1,0},{0,1},{0,-1}};
+    int dfs(vector<vector<int>>& grid, int i, int j){
+        if(i < 0 || j < 0 || i == m || j == n || grid[i][j] != 1){
+            return 0;
+        }
+        grid[i][j] = 0;
+        int ans = 1;
+        for(int k = 0; k < 4; k++){
+            int next_i = i + dirs[k][0], next_j = j + dirs[k][1];
+            ans += dfs(grid,next_i,next_j);
+        }
+        return ans;
+
+    }
+    int maxAreaOfIsland(vector<vector<int>>& grid) {
+        int ans = 0;
+        this -> m = grid.size(), this->n = grid[0].size();
+        for(int i = 0; i < m; i++){
+            for(int j = 0; j < n; j++){
+                if(grid[i][j] == 1)
+                ans = max(ans, dfs(grid,i,j));
+            }
+        }
+        return ans;
+    }
+};
