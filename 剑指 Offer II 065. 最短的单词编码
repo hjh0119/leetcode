@@ -1,0 +1,35 @@
+struct Trie{
+    Trie* child[26];
+    Trie(){
+        fill(begin(child),end(child),nullptr);
+    }
+};
+class Solution {
+private:
+    Trie * root;
+public:
+    int minimumLengthEncoding(vector<string>& words) {
+        sort(words.begin(),words.end(),[&](string a, string b){
+            return a.size() > b.size();
+        });
+        root = new Trie();
+        int n = words.size();
+        int res = 0;
+        for(auto word: words){
+            Trie * cur = root;
+            bool flag = false;
+            for(int i = word.size()-1; i >= 0; i--){
+                int idx = word[i] - 'a';
+                if(cur->child[idx] == nullptr){
+                    cur->child[idx] = new Trie();
+                    flag = true;
+                }
+                cur = cur -> child[idx];
+            }
+            if(flag){
+                res += word.size() + 1;
+            }
+        }
+        return res;
+    }
+};
