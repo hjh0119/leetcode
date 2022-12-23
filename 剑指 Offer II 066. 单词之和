@@ -1,0 +1,47 @@
+//字典树
+struct Trie{
+    Trie* child[26];
+    int val;
+    Trie(){
+        val = 0;
+        fill(begin(child),end(child),nullptr);
+    }
+};
+class MapSum {
+private:
+    Trie* root;
+    unordered_map<string,int> cnt;
+public:
+    /** Initialize your data structure here. */
+    MapSum() {
+        root = new Trie();
+    }
+    
+    void insert(string key, int val) {
+        int delta = val;
+        if(cnt.count(key)){
+            delta -= cnt[key];
+        }
+        cnt[key] = val;
+        Trie* cur = root;
+        for(auto c : key){
+            if(cur->child[c-'a']==nullptr){
+                cur->child[c-'a'] = new Trie();
+            }
+            cur = cur->child[c-'a'];
+            cur->val += delta;
+        }
+    }
+    
+    int sum(string prefix) {
+        Trie* cur = root;
+        for(auto c: prefix){
+            if(cur->child[c-'a'] == nullptr){
+                return 0;
+            }else{
+                cur = cur->child[c-'a'];
+            }
+        }
+        return cur->val;
+    }
+};
