@@ -1,0 +1,10 @@
+class Solution {
+public:
+    int finalValueAfterOperations(vector<string>& operations) {
+        int res = 0;
+        for(auto &str : operations){
+            str[1] == '+'? res++ : res--;
+        }
+        return res;
+    }
+};
