@@ -1,0 +1,22 @@
+class Solution {
+public:
+    string largestMerge(string_view word1, string_view word2) {
+        string ans;
+        int n = word1.size(), m = word2.size();
+        int s1 = 0, s2 = 0;
+        while(s1 < n && s2 < m){
+            if(word1.substr(s1,n) > word2.substr(s2,m)){
+                ans.push_back(word1[s1++]);
+            }else{
+                ans.push_back(word2[s2++]);
+            }
+        }
+        while(s1 < n){
+            ans.push_back(word1[s1++]);
+        }
+        while(s2 < m){
+            ans.push_back(word2[s2++]);
+        }
+        return ans;
+    }
+};
