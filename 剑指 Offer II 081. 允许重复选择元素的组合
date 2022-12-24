@@ -1,0 +1,22 @@
+//回溯法
+class Solution {
+public:
+    vector<vector<int>> res;
+    vector<int> path;
+    void backTrack(vector<int>& a, int start, int sum, int target){
+        if(sum >= target){
+            if(sum == target)
+                res.push_back(path);
+            return;
+        }
+        for(int i = start; i < a.size(); i++){
+            path.push_back(a[i]);
+            backTrack(a, i, sum + a[i], target);
+            path.pop_back();
+        }
+    }
+    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+        backTrack(candidates, 0, 0, target);
+        return res;
+    }
+};
