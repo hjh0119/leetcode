@@ -1,0 +1,29 @@
+class Solution {
+public:
+    vector<vector<int>> res;
+    vector<int> path;
+    vector<bool> visited;
+    int size;
+    void backTrack(vector<int>& nums){
+        if(path.size() == size){
+            res.push_back(path);
+        }
+        for(int i = 0; i < size; i++){
+            if(i > 0 && nums[i] == nums[i-1] && visited[i-1] == false)continue;
+            if(visited[i])continue;
+            visited[i] = true;
+            path.push_back(nums[i]);
+            backTrack(nums);
+            path.pop_back();
+            visited[i] = false;
+        }
+    }
+    vector<vector<int>> permuteUnique(vector<int>& nums) {
+        int n = nums.size();
+        sort(nums.begin(), nums.end());
+        size = n;
+        visited.resize(n,false);
+        backTrack(nums);
+        return res;
+    }
+};
