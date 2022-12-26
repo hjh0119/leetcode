@@ -1,0 +1,38 @@
+class Solution {
+public:
+    int countHomogenous(string s) {
+        const int MOD = 1e9 + 7;
+        int n = s.size();
+        if(n == 1)return 1;
+        long st = 0;
+        long long res = 0;
+        for(long i = 1; i < n; i++){
+            if(s[i] != s[i-1]){
+                res += ((i-st)*(i-st+1)/2)%MOD;
+                st = i;
+            }else if(i == n-1){
+                res += ((i-st+1)*(i-st+2)/2)%MOD;
+            }
+        }
+        if(s[n-1] != s[n-2])res++;
+        return res;
+    }
+};
+
+class Solution {
+public:
+    int countHomogenous(string s) {
+        const int MOD = 1e9 + 7;
+        int n = s.size(), k = 1;
+        int res = 1;
+        for(int i = 1; i < n; i++){
+            if(s[i] == s[i-1]){
+                k++;
+            }else{
+                k = 1;
+            }
+            res = (res + k) % MOD;
+        }
+        return res;
+    }
+};
