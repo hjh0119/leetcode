@@ -1,0 +1,32 @@
+class Solution {
+public:
+    vector<int> pre;
+    Solution(vector<int>& w) {
+        pre.resize(w.size()+1,0);
+        for(int i = 1; i < pre.size(); i++){
+            pre[i] = pre[i-1] + w[i-1];
+        }
+        srand(time(0));
+    }
+    
+    int pickIndex() {
+        int x = rand()%pre[pre.size()-1] + 1;
+        int ans = help(x);
+        return ans-1;
+    }
+
+    int help(int target){
+        int left = 0, right = pre.size();
+        while(left <= right){
+            int mid = right + ((left - right) >> 1);
+            if(pre[mid] == target){
+                return mid;
+            }else if(pre[mid] > target){
+                right = mid - 1;
+            }else{
+                left = mid + 1;
+            }
+        }
+        return left;
+    }
+};
