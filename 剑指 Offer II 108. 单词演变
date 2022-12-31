@@ -1,0 +1,54 @@
+//双向bfs
+class Solution {
+public:
+    string s,e;
+    unordered_set<string> S;
+
+    int ladderLength(string beginWord, string endWord, vector<string>& wordList) {
+        s = beginWord, e = endWord;
+        for(string & w: wordList)S.insert(w);
+        if(!S.count(endWord))return 0;
+        int ans = bfs();
+        return ans + 1;
+    }
+
+    int bfs(){
+        unordered_map<string,int> m1, m2;
+        queue<string> q1, q2;
+        m1[s] = 0, m2[e] = 0;
+        q1.push(s);
+        q2.push(e);
+        while(!q1.empty() && !q2.empty()){
+            int t = -1;
+            if(q1.size() <= q2.size()){
+                t = update(q1,m1,m2);
+            }else{
+                t = update(q2,m2,m1);
+            }
+            if(t != -1)return t;
+        }
+        return -1;
+    }
+
+    int update(queue<string>&q, unordered_map<string,int>&now, unordered_map<string,int>&other){
+        string begin = q.front();
+        q.pop();
+        int n = begin.size();
+        for(int i = 0; i < n ; i++){
+            string modify = begin;
+            for(int j = 0; j < 26; j++){
+                modify[i] = char(j+'a');
+                if(S.count(modify)){
+                    if(now.count(modify))continue;
+                    if(other.count(modify)){
+                        return now[begin] + 1 + other[modify];
+                    }else{
+                        q.push(modify);
+                        now[modify] = now[begin] + 1;
+                    }
+                }
+            }
+        }
+        return -1;
+    }
+};
