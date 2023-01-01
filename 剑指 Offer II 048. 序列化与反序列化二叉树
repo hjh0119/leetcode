@@ -1,0 +1,66 @@
+class Codec {
+public: 
+    // Encodes a tree to a single string.
+    string serialize(TreeNode* root) {
+        queue<TreeNode*> q;
+        string res;
+        q.push(root);
+        while(!q.empty()){
+            TreeNode* tmp = q.front();
+            q.pop();
+            if(tmp!=nullptr){
+                res.append(to_string(tmp->val).append(","));
+                q.push(tmp->left);
+                q.push(tmp->right);
+            }else{
+                res.append("None,");
+            }
+        }
+        return res;
+    }
+
+    // Decodes your encoded data to tree.
+    TreeNode* deserialize(string data) {
+        string temp;
+        list<string> l;
+        for(char &c:data){
+            if(c!=','){
+                temp.push_back(c);
+            }
+            else{
+                l.push_back(temp);
+                temp.clear();
+            }
+        }
+        queue<TreeNode*> q;
+        if(l.front() == "None"){
+            return nullptr;
+        }
+        TreeNode* head = new TreeNode(stoi(l.front()));
+        l.pop_front();
+        q.push(head);
+        while(!l.empty()){
+            if(!q.empty()){
+                TreeNode* tmp = q.front();
+                q.pop();
+                if(l.front()!="None"){
+                    tmp->left = new TreeNode(stoi(l.front()));
+                    l.pop_front();
+                    q.push(tmp->left);
+                }else{
+                    l.pop_front();
+                }
+                if(l.front()!="None"){
+                    tmp->right = new TreeNode(stoi(l.front()));
+                    l.pop_front();
+                    q.push(tmp->right);
+                }else{
+                    l.pop_front();
+                }
+            }else{
+                break;
+            }
+        }
+        return head;
+    }
+};
