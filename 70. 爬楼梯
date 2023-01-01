@@ -1,0 +1,15 @@
+class Solution {
+public:
+    int climbStairs(int n) {
+        //pre1表示与当前差2格的总方法数, pre2 表示与当前差1格的总方法数
+        int pre1 = 1, pre2 = 2, res;
+        if(n <= 2)return n;
+
+        for(int i = 3; i <= n; i++){
+            res = pre1 + pre2;
+            pre1 = pre2;
+            pre2 = res;
+        }
+        return res;
+    }
+};
