@@ -1,0 +1,26 @@
+//优先队列
+class Solution {
+public:
+    struct Status{
+        int val;
+        ListNode* ptr;
+        bool operator<(const Status& p) const {
+            return val > p.val;
+        }
+    };
+    ListNode* mergeKLists(vector<ListNode*>& lists) {
+        priority_queue<Status> pq;
+        for(auto node : lists){
+            if(node) pq.push({node->val, node});
+        }
+        ListNode head, *tail = &head;
+        while(!pq.empty()){
+            auto f = pq.top();
+            pq.pop();
+            tail->next = f.ptr;
+            tail = tail->next;
+            if(f.ptr->next)pq.push({f.ptr->next->val,f.ptr->next});
+        }
+        return head.next;
+    }
+};
