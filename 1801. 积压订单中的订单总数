@@ -1,0 +1,51 @@
+//优先队列模拟
+class Solution {
+public:
+    int getNumberOfBacklogOrders(vector<vector<int>>& orders) {
+        const int MOD = 1e9 + 7;
+        priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>> sell;
+        priority_queue<pair<int,int>,vector<pair<int,int>>,less<pair<int,int>>> buy;
+        for(auto & order: orders){
+            int price = order[0], amount = order[1], type = order[2];
+            if(type == 0){
+                while(amount && !sell.empty() && sell.top().first <= price){
+                    auto sellOrder = sell.top();
+                    sell.pop();
+                    int sellAmount = min(amount, sellOrder.second);
+                    amount -= sellAmount;
+                    sellOrder.second -= sellAmount;
+                    if(sellOrder.second > 0){
+                        sell.push(sellOrder);
+                    }
+                }
+                if(amount > 0){
+                    buy.emplace(price, amount);
+                }
+            }else{
+                while(amount && !buy.empty() && buy.top().first >= price){
+                    auto buyOrder = buy.top();
+                    buy.pop();
+                    int buyAmount = min(amount, buyOrder.second);
+                    amount -= buyAmount;
+                    buyOrder.second -= buyAmount;
+                    if(buyOrder.second > 0){
+                        buy.push(buyOrder);
+                    }
+                }
+                if(amount > 0){
+                    sell.emplace(price, amount);
+                }
+            }
+        }
+        int total = 0;
+        while (!buy.empty()) {
+            total = (total + buy.top().second) % MOD;
+            buy.pop();
+        }
+        while (!sell.empty()) {
+            total = (total + sell.top().second) % MOD;
+            sell.pop();
+        }
+        return total;
+    }
+};
