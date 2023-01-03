@@ -1,0 +1,24 @@
+class Solution {
+public:
+    bool areNumbersAscending(string s) {
+        int pre = INT_MIN, cur = 0;
+        bool flag = false;
+        for(int i = 0; i < s.size(); i++){
+            if(s[i]>='0'&&s[i]<='9'){
+                flag = true;
+                cur = cur * 10 + (s[i]-'0');
+            }else if(flag){
+                if(cur <= pre){
+                    return false;
+                }
+                pre = cur;
+                cur = 0;
+                flag = false;
+            }
+        }
+        if(s.back()>='0'&&s.back()<='9'){
+            return cur > pre;
+        }
+        return true;
+    }
+};
