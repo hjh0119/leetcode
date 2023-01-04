@@ -1,0 +1,21 @@
+class Solution {
+public:
+    //一共cnt个数,最大值为x的和
+    inline long sum(long x, int cnt){
+        return x >= cnt? (x + x - cnt + 1) * cnt / 2 : (x + 1) * x / 2 + cnt - x;
+    }
+
+    int maxValue(int n, int index, int maxSum) {
+        int left = maxSum / n, right = maxSum;
+        while(left <= right){
+            int mid = left + ((right - left) >> 1);
+            if(sum(mid-1, index) + sum(mid,n - index) > maxSum){
+                right = mid - 1;
+            }else{
+                left = mid + 1;
+            }
+        }
+        return right;
+        
+    }
+};
