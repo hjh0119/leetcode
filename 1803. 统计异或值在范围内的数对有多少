@@ -1,0 +1,77 @@
+//暴力,超时
+class Solution {
+public:
+    int countPairs(vector<int>& nums, int low, int high) {
+        int n = nums.size(), res = 0;
+        for(int i = 0; i < n; i++){
+            for(int j = i + 1; j < n; j++){
+                int tmp = nums[i] ^ nums[j];
+                if(tmp >= low && tmp <= high){
+                    res++;
+                }
+            }
+        }
+        return res;
+    }
+};
+
+//字典树
+class Trie{
+public:
+    Trie * trie[2];
+    int cnt;
+};
+
+class Solution {
+public:
+    Trie* root;
+
+    void add(int x){
+        Trie * p = root;
+        for(int i = 14; i >= 0; i--){
+            int u = (x >> i) & 1;
+            if(p->trie[u] == nullptr) p->trie[u] = new Trie();
+            p = p ->trie[u];
+            p -> cnt++;
+        }
+    }
+
+    //query判断与x异或不超过limit的个数
+    int query(int x, int limit){
+        int sum = 0;
+        Trie * p = root;
+        //从最高位开始判断, 某一位小于limit的直接加cnt, 等于limit的继续判断,大于limit的舍弃
+        for(int i = 14; i >= 0; i--){
+            //u为x的第i位
+            int u = (x >> i) & 1;
+            if(((limit >> i) & 1) == 1){
+                //limit第i位为1, 异或为0的后面不必再查找
+                if(p->trie[u] != nullptr) sum += p->trie[u]->cnt;
+                //异或为1的继续判断
+                if(p->trie[u ^ 1] == nullptr) return sum;
+                p = p -> trie[u ^ 1];
+            }
+            //limit第i位为0, 继续查找异或为0
+            else{
+                if(p->trie[u] == nullptr) return sum;
+                p = p->trie[u];
+            }
+        }
+        sum += p->cnt;
+        return sum;
+    }
+
+    int get(vector<int> &nums, int limit) {
+        root = new Trie();
+        int ans = 0;
+        for (int i = 0; i < nums.size(); i++) {
+            ans += query(nums[i], limit);
+            add(nums[i]);
+        }
+        return ans;
+    }
+
+    int countPairs(vector<int>& nums, int low, int high) {
+        return get(nums, high) - get(nums, low - 1);
+    }
+};
