@@ -1,0 +1,65 @@
+//前缀和 + 二分(调用lower_bound版)
+class Solution {
+public:
+    int minSubArrayLen(int target, vector<int>& nums) {
+        int n = nums.size(), res = INT_MAX;
+        vector<int> preSum(n+1);
+        preSum[0] = 0;
+        for(int i = 0; i < n; i++){
+            preSum[i+1] = preSum[i] + nums[i];
+        }
+        for(int i = 1; i <= n; i++){
+            int tmp = target + preSum[i-1];
+            auto bound = lower_bound(preSum.begin(), preSum.end(), tmp);
+            if (bound != preSum.end()) {
+                res = min(res, static_cast<int>((bound - preSum.begin()) - (i - 1)));
+            }
+        }
+        return res == INT_MAX? 0 : res;
+    }
+};
+
+//自写二分
+class Solution {
+public:
+    int minSubArrayLen(int target, vector<int>& nums) {
+        int n = nums.size(), res = INT_MAX;
+        vector<int> preSum(n+1);
+        preSum[0] = 0;
+        for(int i = 0; i < n; i++){
+            preSum[i+1] = preSum[i] + nums[i];
+        }
+        for(int i = 1; i <= n; i++){
+            int left = 1, right = n-1;
+            int tmp = target + preSum[i-1];
+            while(left <= right){
+                int mid = left + (right - left) / 2;
+                if(preSum[mid] >= tmp){
+                    right = mid - 1;
+                }else{
+                    left = mid + 1;
+                }
+            }
+            if(preSum[left] >= tmp){
+                res = min(res, left - i + 1);
+            }
+        }
+        return res == INT_MAX? 0 : res;
+    }
+};
+
+//滑动窗口
+class Solution {
+public:
+    int minSubArrayLen(int target, vector<int>& nums) {
+        int n = nums.size(), sum = 0, st = 0, ed = 0, res = INT_MAX;
+        while(ed < n){
+            sum += nums[ed++];
+            while(sum >= target){
+                res = min(res, ed - st);
+                sum -= nums[st++];
+            }
+        }
+        return res == INT_MAX? 0 : res;
+    }
+};
