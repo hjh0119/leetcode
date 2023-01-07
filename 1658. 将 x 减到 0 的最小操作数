@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int minOperations(vector<int>& nums, int x) {
+        int sum = 0, n = nums.size();
+        for(auto num : nums){
+            sum += num;
+        }
+        int target = sum - x, res = -1;
+        if(target < 0) return -1;
+        int st = 0, ed = 0;
+        while(ed < n){
+            target -= nums[ed++];
+            while(target < 0){
+                target += nums[st++];
+            }
+            if(target == 0){
+                res = max(res, ed - st);
+            }
+        }
+        return res == -1? -1 : n - res;
+    }
+};
