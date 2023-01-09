@@ -1,0 +1,19 @@
+class Solution {
+public:
+    int findMin(vector<int>& nums) {
+        int left = 0, right = nums.size() - 1;
+        while(left < right){
+            //思路:最小值一定出现在无序的一边,每次查找无序的一边
+            int mid = (left + right) >> 1;
+            //右边有序,舍弃右边
+            if(nums[mid] < nums[right]){
+                right = mid;
+            }
+            //左边有序,舍弃左边
+            else{
+                left = mid + 1;
+            }
+        }
+        return nums[left];
+    }
+};
