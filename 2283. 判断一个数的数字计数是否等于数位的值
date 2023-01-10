@@ -1,0 +1,15 @@
+class Solution {
+public:
+    bool digitCount(string num) {
+        //unordered_map<int,int> m;
+        int m[10] = {0};
+        for(auto c : num){
+            m[c-'0']++;
+        }
+        for(int i = 0; i < num.size(); i++){
+            if(m[i] == (num[i] - '0'))continue;
+            else return false;
+        }
+        return true;
+    }
+};
